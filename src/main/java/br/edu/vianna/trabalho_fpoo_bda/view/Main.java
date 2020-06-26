@@ -10,7 +10,10 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.web.WebView;
 /**
  *
  * @author breno
@@ -45,8 +48,16 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         jbTeste = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jbTeste.setText("Teste");
         jbTeste.addActionListener(new java.awt.event.ActionListener() {
@@ -55,21 +66,29 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(100, 100, 100)
+                .addContainerGap(1020, Short.MAX_VALUE)
                 .addComponent(jbTeste)
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(100, 100, 100)
+                .addContainerGap(543, Short.MAX_VALUE)
                 .addComponent(jbTeste)
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -78,6 +97,24 @@ public class Main extends javax.swing.JFrame {
     private void jbTesteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbTesteActionPerformed
         JOptionPane.showMessageDialog(null, "Bora trabalhar! :)", "Alerta", 1);
     }//GEN-LAST:event_jbTesteActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+//        SwingHTMLBrowser browser = new SwingHTMLBrowser();
+//        browser.setVisible(true);
+        
+        JFXPanel jfxPanel = new JFXPanel();
+        this.add(jfxPanel);
+        jfxPanel.setToolTipText("teste");
+        jfxPanel.setBounds(0, 0, this.getSize().width, this.getSize().height - 94);
+        jfxPanel.setVisible(true);
+        
+        Platform.runLater(() -> {
+            WebView webView = new WebView();
+            jfxPanel.setScene(new Scene(webView, 500, 500));
+            webView.getEngine().load("https://www.news.med.br/");
+        });
+
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -103,6 +140,9 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JButton jbTeste;
     // End of variables declaration//GEN-END:variables
 }
