@@ -10,32 +10,30 @@ package br.edu.vianna.trabalho_fpoo_bda.model;
  * @author natha
  */
 public class Professional {
-    private int idProfissional;
-    private String descricao;
-
-    public Professional(int idProfissional, String descricao) {
-        this.idProfissional = idProfissional;
-        this.descricao = descricao;
-    }
+    private int id;
+    private ProfessionalType tipo;
 
     public Professional() {
     }
 
-    public int getIdProfissional() {
-        return idProfissional;
+    public Professional(int id, ProfessionalType tipo) {
+        this.id = id;
+        this.tipo = tipo;
     }
 
-    public void setIdProfissional(int idProfissional) {
-        this.idProfissional = idProfissional;
+    public int getId() {
+        return id;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public ProfessionalType getTipo() {
+        return tipo;
     }
-    
-    
+
+    public void setTipo(ProfessionalType tipo) {
+        this.tipo = tipo;
+    }
 }

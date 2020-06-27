@@ -10,11 +10,11 @@ package br.edu.vianna.trabalho_fpoo_bda.model;
  * @author natha
  */
 public class Usertype {
-    private int idTipoUsuario;
+    private int id;
     private String descricao;
 
     public Usertype(int idTipoUsuario, String descricao) {
-        this.idTipoUsuario = idTipoUsuario;
+        this.id = idTipoUsuario;
         this.descricao = descricao;
     }
 
@@ -22,11 +22,11 @@ public class Usertype {
     }
 
     public int getIdTipoUsuario() {
-        return idTipoUsuario;
+        return id;
     }
 
     public void setIdTipoUsuario(int idTipoUsuario) {
-        this.idTipoUsuario = idTipoUsuario;
+        this.id = idTipoUsuario;
     }
 
     public String getDescricao() {

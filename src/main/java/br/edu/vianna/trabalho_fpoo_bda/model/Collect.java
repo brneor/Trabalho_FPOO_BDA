@@ -12,64 +12,61 @@ import java.util.Date;
  * @author natha
  */
 public class Collect {
-    private int idColeta, idPaciente, idProfissional, idMaterial;
+    private int id;
+    private Patient paciente;
+    private Professional profissional; 
+    private Material material;
     private boolean realizado;
     private String cidade;
-    private Date dataColeta, horaColeta;
+    private Date data, hora;    
 
-    public Collect(int idColeta, int idPaciente, int idProfissional, 
-        int idMaterial, boolean realizado, String cidade, 
-        Date dataColeta, Date horaColeta) {
-        
-        this.idColeta = idColeta;
-        this.idPaciente = idPaciente;
-        this.idProfissional = idProfissional;
-        this.idMaterial = idMaterial;
+    public Collect() {
+    }
+
+    public Collect(int idColeta, Patient paciente, Professional profissional, Material material, boolean realizado, String cidade, Date dataColeta, Date horaColeta) {
+        this.id = idColeta;
+        this.paciente = paciente;
+        this.profissional = profissional;
+        this.material = material;
         this.realizado = realizado;
         this.cidade = cidade;
-        this.dataColeta = dataColeta;
-        this.horaColeta = horaColeta;
-    }
-    
-    
-    
-    public Collect() {
-        
+        this.data = dataColeta;
+        this.hora = horaColeta;
     }
 
     public int getIdColeta() {
-        return idColeta;
+        return id;
     }
 
     public void setIdColeta(int idColeta) {
-        this.idColeta = idColeta;
+        this.id = idColeta;
     }
 
-    public int getIdPaciente() {
-        return idPaciente;
+    public Patient getPaciente() {
+        return paciente;
     }
 
-    public void setIdPaciente(int idPaciente) {
-        this.idPaciente = idPaciente;
+    public void setPaciente(Patient paciente) {
+        this.paciente = paciente;
     }
 
-    public int getIdProfissional() {
-        return idProfissional;
+    public Professional getProfissional() {
+        return profissional;
     }
 
-    public void setIdProfissional(int idProfissional) {
-        this.idProfissional = idProfissional;
+    public void setProfissional(Professional profissional) {
+        this.profissional = profissional;
     }
 
-    public int getIdMaterial() {
-        return idMaterial;
+    public Material getMaterial() {
+        return material;
     }
 
-    public void setIdMaterial(int idMaterial) {
-        this.idMaterial = idMaterial;
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 
-    public boolean getRealizado() {
+    public boolean isRealizado() {
         return realizado;
     }
 
@@ -86,19 +83,19 @@ public class Collect {
     }
 
     public Date getDataColeta() {
-        return dataColeta;
+        return data;
     }
 
     public void setDataColeta(Date dataColeta) {
-        this.dataColeta = dataColeta;
+        this.data = dataColeta;
     }
 
     public Date getHoraColeta() {
-        return horaColeta;
+        return hora;
     }
 
     public void setHoraColeta(Date horaColeta) {
-        this.horaColeta = horaColeta;
+        this.hora = horaColeta;
     }
     
     

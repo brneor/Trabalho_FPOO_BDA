@@ -10,11 +10,12 @@ package br.edu.vianna.trabalho_fpoo_bda.model;
  * @author natha
  */
 public class User {
-    private int idLogin, tipoUsuario, cpf;
+    private int id, cpf;
+    private Usertype tipoUsuario;
     private String nome, senha;
 
-    public User(int idLogin, int tipoUsuario, int cpf, String nome, String senha) {
-        this.idLogin = idLogin;
+    public User(int idLogin, Usertype tipoUsuario, int cpf, String nome, String senha) {
+        this.id = idLogin;
         this.tipoUsuario = tipoUsuario;
         this.cpf = cpf;
         this.nome = nome;
@@ -25,18 +26,18 @@ public class User {
     }
 
     public int getIdLogin() {
-        return idLogin;
+        return id;
     }
 
     public void setIdLogin(int idLogin) {
-        this.idLogin = idLogin;
+        this.id = idLogin;
     }
 
-    public int getTipoUsuario() {
+    public Usertype getTipoUsuario() {
         return tipoUsuario;
     }
 
-    public void setTipoUsuario(int tipoUsuario) {
+    public void setTipoUsuario(Usertype tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
 

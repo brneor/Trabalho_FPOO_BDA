@@ -10,11 +10,11 @@ package br.edu.vianna.trabalho_fpoo_bda.model;
  * @author natha
  */
 public class ProfessionalType {
-    private int idTipoProfissional;
+    private int id;
     private String descricao;
 
     public ProfessionalType(int idTipoProfissional, String descricao) {
-        this.idTipoProfissional = idTipoProfissional;
+        this.id = idTipoProfissional;
         this.descricao = descricao;
     }
 
@@ -22,11 +22,11 @@ public class ProfessionalType {
     }
 
     public int getIdTipoProfissional() {
-        return idTipoProfissional;
+        return id;
     }
 
     public void setIdTipoProfissional(int idTipoProfissional) {
-        this.idTipoProfissional = idTipoProfissional;
+        this.id = idTipoProfissional;
     }
 
     public String getDescricao() {

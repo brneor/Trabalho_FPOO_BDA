@@ -10,33 +10,30 @@ package br.edu.vianna.trabalho_fpoo_bda.model;
  * @author natha
  */
 public class Test {
-    private int idTeste, idExame;
-
-    public Test(int idTeste, int idExame) {
-        this.idTeste = idTeste;
-        this.idExame = idExame;
-    }
+    private int id;
+    private Exam exame;
 
     public Test() {
     }
 
-    public int getIdTeste() {
-        return idTeste;
+    public Test(int id, Exam exame) {
+        this.id = id;
+        this.exame = exame;
     }
 
-    public void setIdTeste(int idTeste) {
-        this.idTeste = idTeste;
+    public int getId() {
+        return id;
     }
 
-    public int getIdExame() {
-        return idExame;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setIdExame(int idExame) {
-        this.idExame = idExame;
+    public Exam getExame() {
+        return exame;
     }
 
-
-    
-    
+    public void setExame(Exam exame) {
+        this.exame = exame;
+    }
 }

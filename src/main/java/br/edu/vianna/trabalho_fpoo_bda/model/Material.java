@@ -10,11 +10,11 @@ package br.edu.vianna.trabalho_fpoo_bda.model;
  * @author natha
  */
 public class Material {
-    private int idMaterial;
+    private int id;
     private String descricao;
 
     public Material(int idMaterial, String descricao) {
-        this.idMaterial = idMaterial;
+        this.id = idMaterial;
         this.descricao = descricao;
     }
 
@@ -22,11 +22,11 @@ public class Material {
     }
 
     public int getIdMaterial() {
-        return idMaterial;
+        return id;
     }
 
     public void setIdMaterial(int idMaterial) {
-        this.idMaterial = idMaterial;
+        this.id = idMaterial;
     }
 
     public String getDescricao() {

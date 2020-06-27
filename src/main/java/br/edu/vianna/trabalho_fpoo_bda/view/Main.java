@@ -39,7 +39,7 @@ public class Main extends javax.swing.JFrame {
             java.lang.reflect.Field awtAppClassNameField =
                 xToolkit.getClass().getDeclaredField("awtAppClassName");
             awtAppClassNameField.setAccessible(true);
-            awtAppClassNameField.set(xToolkit, "Breath of the Wild Armory");
+            awtAppClassNameField.set(xToolkit, "SuperLabManager");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }

@@ -10,50 +10,50 @@ package br.edu.vianna.trabalho_fpoo_bda.model;
  * @author natha
  */
 public class Exam {
-    private int idExame, idTeste, idResultadoExame, idPaciente;
-
-    public Exam(int idExame, int idTeste, int idResultadoExame, int idPaciente) {
-        this.idExame = idExame;
-        this.idTeste = idTeste;
-        this.idResultadoExame = idResultadoExame;
-        this.idPaciente = idPaciente;
-    }
+    private int id;
+    private Test teste;
+    private ExamResult resultadoExame;
+    private Patient paciente;
 
     public Exam() {
     }
-    
-   
+
+    public Exam(int idExame, Test teste, ExamResult resultadoExame, Patient paciente) {
+        this.id = idExame;
+        this.teste = teste;
+        this.resultadoExame = resultadoExame;
+        this.paciente = paciente;
+    }
+
     public int getIdExame() {
-        return idExame;
+        return id;
     }
 
     public void setIdExame(int idExame) {
-        this.idExame = idExame;
+        this.id = idExame;
     }
 
-    public int getIdTeste() {
-        return idTeste;
+    public Test getTeste() {
+        return teste;
     }
 
-    public void setIdTeste(int idTeste) {
-        this.idTeste = idTeste;
+    public void setTeste(Test teste) {
+        this.teste = teste;
     }
 
-    public int getIdResultadoExame() {
-        return idResultadoExame;
+    public ExamResult getResultadoExame() {
+        return resultadoExame;
     }
 
-    public void setIdResultadoExame(int idResultadoExame) {
-        this.idResultadoExame = idResultadoExame;
+    public void setResultadoExame(ExamResult resultadoExame) {
+        this.resultadoExame = resultadoExame;
     }
 
-    public int getIdPaciente() {
-        return idPaciente;
+    public Patient getPaciente() {
+        return paciente;
     }
 
-    public void setIdPaciente(int idPaciente) {
-        this.idPaciente = idPaciente;
+    public void setPaciente(Patient paciente) {
+        this.paciente = paciente;
     }
-    
-    
 }

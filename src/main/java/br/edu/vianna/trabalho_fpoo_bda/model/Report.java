@@ -10,39 +10,41 @@ package br.edu.vianna.trabalho_fpoo_bda.model;
  * @author natha
  */
 public class Report {
-    private int idRelatorio, idPaciente, idExame;
-
-    public Report(int idRelatorio, int idPaciente, int idExame) {
-        this.idRelatorio = idRelatorio;
-        this.idPaciente = idPaciente;
-        this.idExame = idExame;
-    }
+    private int id;
+    private Patient paciente;
+    private Exam exame;
 
     public Report() {
     }
 
-    public int getIdRelatorio() {
-        return idRelatorio;
+    public Report(int id, Patient paciente, Exam exame) {
+        this.id = id;
+        this.paciente = paciente;
+        this.exame = exame;
     }
 
-    public void setIdRelatorio(int idRelatorio) {
-        this.idRelatorio = idRelatorio;
+    public int getId() {
+        return id;
     }
 
-    public int getIdPaciente() {
-        return idPaciente;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setIdPaciente(int idPaciente) {
-        this.idPaciente = idPaciente;
+    public Patient getPaciente() {
+        return paciente;
     }
 
-    public int getIdExame() {
-        return idExame;
+    public void setPaciente(Patient paciente) {
+        this.paciente = paciente;
     }
 
-    public void setIdExame(int idExame) {
-        this.idExame = idExame;
+    public Exam getExame() {
+        return exame;
+    }
+
+    public void setExame(Exam exame) {
+        this.exame = exame;
     }
     
     

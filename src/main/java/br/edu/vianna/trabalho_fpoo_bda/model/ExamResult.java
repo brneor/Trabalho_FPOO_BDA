@@ -10,11 +10,11 @@ package br.edu.vianna.trabalho_fpoo_bda.model;
  * @author natha
  */
 public class ExamResult {
-    private int idResultadoExame;
+    private int id;
     private String descricao;
 
     public ExamResult(int idResultadoExame, String descricao) {
-        this.idResultadoExame = idResultadoExame;
+        this.id = idResultadoExame;
         this.descricao = descricao;
     }
 
@@ -22,11 +22,11 @@ public class ExamResult {
     }
 
     public int getIdResultadoExame() {
-        return idResultadoExame;
+        return id;
     }
 
     public void setIdResultadoExame(int idResultadoExame) {
-        this.idResultadoExame = idResultadoExame;
+        this.id = idResultadoExame;
     }
 
     public String getDescricao() {

@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author breno
  */
-public class Patient {
+public class Patient extends User {
     private int cpf;
     private boolean risco;
     private Date dataNascimento;
