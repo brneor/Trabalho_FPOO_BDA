@@ -5,6 +5,9 @@
  */
 package br.edu.vianna.trabalho_fpoo_bda.view;
 
+import br.edu.vianna.trabalho_fpoo_bda.view.collect.CollectNew;
+import br.edu.vianna.trabalho_fpoo_bda.view.patient.PatientNew;
+import br.edu.vianna.trabalho_fpoo_bda.view.patient.PatientSearch;
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
@@ -14,6 +17,8 @@ import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 /**
  *
  * @author breno
@@ -48,11 +53,15 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         jbTeste = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        jmbMainMenu = new javax.swing.JMenuBar();
+        jmSistema = new javax.swing.JMenu();
+        jmiSobre = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jmiSair = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SuperLabManager");
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -66,13 +75,18 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        jmSistema.setText("Sistema");
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        jmiSobre.setText("Sobre");
+        jmSistema.add(jmiSobre);
+        jmSistema.add(jSeparator1);
 
-        setJMenuBar(jMenuBar1);
+        jmiSair.setText("Sair");
+        jmSistema.add(jmiSair);
+
+        jmbMainMenu.add(jmSistema);
+
+        setJMenuBar(jmbMainMenu);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -86,7 +100,7 @@ public class Main extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(543, Short.MAX_VALUE)
+                .addContainerGap(624, Short.MAX_VALUE)
                 .addComponent(jbTeste)
                 .addContainerGap())
         );
@@ -99,23 +113,129 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jbTesteActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-//        SwingHTMLBrowser browser = new SwingHTMLBrowser();
-//        browser.setVisible(true);
-        
+        createMenu();
+        createWebivew();
+    }//GEN-LAST:event_formWindowOpened
+    
+// Cria um webview JavaFX para ser exibido na página principal.
+    private void createWebivew() {
+        // Cria o JFXPanel do tamanho da janela principal descontando o menu
+        // e o espaço inferior para o botão.
         JFXPanel jfxPanel = new JFXPanel();
         this.add(jfxPanel);
-        jfxPanel.setToolTipText("teste");
         jfxPanel.setBounds(0, 0, this.getSize().width, this.getSize().height - 94);
         jfxPanel.setVisible(true);
-        
+
+        // Cria o WebView dentro do jfxPanel e navega para a URL informada.
         Platform.runLater(() -> {
             WebView webView = new WebView();
-            jfxPanel.setScene(new Scene(webView, 500, 500));
+            jfxPanel.setScene(new Scene(webView));
             webView.getEngine().load("https://www.news.med.br/");
         });
+    }
+    
+    private void createMenu() {
+        createMenu(1);
+    }
+    private void createMenu(int userType) {
+        // Cria os menus principais com base no tipo de usuário logado
+        switch (userType) {
+            case 1:
+                createMenuCadastro();
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    }
+    
+    private void createMenuCadastro() {
+        // ---------------------------------------------------------------------
+        // Menu paciente
+        JMenu jmPatient = new JMenu();
+        jmPatient.setText("Paciente");
 
-    }//GEN-LAST:event_formWindowOpened
+        // Novo paciente
+        JMenuItem jmiPatientNew = new JMenuItem();
+        jmiPatientNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jmiPatientNew.setText("Novo...");
+        jmiPatientNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiPatientNewActionPerformed(evt);
+            }
+        });
+        
+        // Buscar paciente
+        JMenuItem jmiPatientSearch = new JMenuItem();
+        jmiPatientSearch.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jmiPatientSearch.setText("Buscar...");
+        jmiPatientSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiPatientSearchActionPerformed(evt);
+            }
+        });
+        
+        // Adiciona os itens ao menu "Paciente"
+        jmPatient.add(jmiPatientNew);
+        jmPatient.add(jmiPatientSearch);
+        // ---------------------------------------------------------------------
 
+        // ---------------------------------------------------------------------
+        // Menu "Coleta"
+        JMenu jmCollect = new JMenu();
+        jmCollect.setText("Coleta");
+        
+        // Nova coleta
+        JMenuItem jmiCollectNew = new JMenuItem();
+        jmiCollectNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jmiCollectNew.setText("Novo...");
+        jmiCollectNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiCollectNewActionPerformed(evt);
+            }
+        });
+        
+        // Adiciona o item ao menu
+        jmCollect.add(jmiCollectNew);
+        // ---------------------------------------------------------------------
+        
+        // ---------------------------------------------------------------------
+        // Menu Profissionais (de saúde)
+        // TODO
+        // ---------------------------------------------------------------------
+
+
+        // Adiciona os menus ao menu principal
+        jmbMainMenu.add(jmPatient);
+        jmbMainMenu.add(jmCollect);
+
+        // Seta a barra de menu para o jmbMainMenu
+        this.setJMenuBar(jmbMainMenu);
+    }
+    
+    private void jmiPatientNewActionPerformed(java.awt.event.ActionEvent evt) {
+        // Cria e apresenta a tela de criação de paciente
+        PatientNew pnew = new PatientNew(this, true);
+        pnew.setLocationRelativeTo(this);
+        pnew.setVisible(true);
+    }
+    
+    private void jmiPatientSearchActionPerformed(java.awt.event.ActionEvent evt) {
+        // Cria e mostra a tela de busca de paciente
+        PatientSearch psearch = new PatientSearch(this, true);
+        psearch.setLocationRelativeTo(this);
+        psearch.setVisible(true);
+    }
+    
+    private void jmiCollectNewActionPerformed(java.awt.event.ActionEvent evt) {
+        // Cria e mostra a tela de cadastro de Coleta
+        CollectNew cnew = new CollectNew(this, true);
+        cnew.setLocationRelativeTo(this);
+        cnew.setVisible(true);
+    }
     /**
      * @param args the command line arguments
      */
@@ -140,9 +260,11 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JButton jbTeste;
+    private javax.swing.JMenu jmSistema;
+    private javax.swing.JMenuBar jmbMainMenu;
+    private javax.swing.JMenuItem jmiSair;
+    private javax.swing.JMenuItem jmiSobre;
     // End of variables declaration//GEN-END:variables
 }
