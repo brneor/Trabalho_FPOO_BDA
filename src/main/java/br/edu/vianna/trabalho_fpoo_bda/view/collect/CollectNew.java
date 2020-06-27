@@ -43,12 +43,16 @@ public class CollectNew extends javax.swing.JDialog {
         jcmbMaterial = new javax.swing.JComboBox<>();
         jbtnSalvar = new javax.swing.JButton();
         jbtnCancel = new javax.swing.JButton();
+        jlblDataColeta = new javax.swing.JLabel();
+        jftxtDataColeta = new javax.swing.JFormattedTextField();
+        jftxtHoraColeta = new javax.swing.JFormattedTextField();
+        jlblHoraColeta = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(300, 320));
-        setPreferredSize(new java.awt.Dimension(300, 320));
+        setMinimumSize(new java.awt.Dimension(300, 380));
+        setPreferredSize(new java.awt.Dimension(300, 380));
         setResizable(false);
-        setSize(new java.awt.Dimension(300, 320));
+        setSize(new java.awt.Dimension(300, 380));
 
         jlblPaciente.setText("Paciente");
 
@@ -76,6 +80,14 @@ public class CollectNew extends javax.swing.JDialog {
             }
         });
 
+        jlblDataColeta.setText("Data");
+
+        jftxtDataColeta.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+
+        jftxtHoraColeta.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("HH:mm"))));
+
+        jlblHoraColeta.setText("Hora");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -83,7 +95,6 @@ public class CollectNew extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jtxtCidade)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jtxtPaciente)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -92,19 +103,30 @@ public class CollectNew extends javax.swing.JDialog {
                         .addComponent(jtxtProfissional)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jbtnBuscaProfissional))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlblPaciente)
-                            .addComponent(jlvlProfissional)
-                            .addComponent(jlblCidade)
-                            .addComponent(jlblMaterial))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jcmbMaterial, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 122, Short.MAX_VALUE)
                         .addComponent(jbtnCancel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jbtnSalvar)))
+                        .addComponent(jbtnSalvar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jftxtDataColeta, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jlblPaciente)
+                            .addComponent(jlvlProfissional)
+                            .addComponent(jlblDataColeta))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jlblHoraColeta)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jftxtHoraColeta)))
+                    .addComponent(jtxtCidade)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jlblCidade)
+                            .addComponent(jlblMaterial))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jcmbMaterial, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -123,6 +145,14 @@ public class CollectNew extends javax.swing.JDialog {
                     .addComponent(jtxtProfissional, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtnBuscaProfissional))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlblDataColeta)
+                    .addComponent(jlblHoraColeta))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jftxtDataColeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jftxtHoraColeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jlblCidade)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jtxtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -130,7 +160,7 @@ public class CollectNew extends javax.swing.JDialog {
                 .addComponent(jlblMaterial)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jcmbMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtnSalvar)
                     .addComponent(jbtnCancel))
@@ -199,7 +229,11 @@ public class CollectNew extends javax.swing.JDialog {
     private javax.swing.JButton jbtnCancel;
     private javax.swing.JButton jbtnSalvar;
     private javax.swing.JComboBox<String> jcmbMaterial;
+    private javax.swing.JFormattedTextField jftxtDataColeta;
+    private javax.swing.JFormattedTextField jftxtHoraColeta;
     private javax.swing.JLabel jlblCidade;
+    private javax.swing.JLabel jlblDataColeta;
+    private javax.swing.JLabel jlblHoraColeta;
     private javax.swing.JLabel jlblMaterial;
     private javax.swing.JLabel jlblPaciente;
     private javax.swing.JLabel jlvlProfissional;

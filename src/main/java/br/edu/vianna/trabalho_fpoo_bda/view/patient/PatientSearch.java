@@ -36,7 +36,6 @@ public class PatientSearch extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Buscar paciente");
         setMinimumSize(new java.awt.Dimension(300, 290));
-        setPreferredSize(new java.awt.Dimension(300, 290));
         setResizable(false);
         setSize(new java.awt.Dimension(300, 290));
 
