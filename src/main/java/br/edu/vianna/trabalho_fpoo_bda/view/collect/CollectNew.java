@@ -6,6 +6,7 @@
 package br.edu.vianna.trabalho_fpoo_bda.view.collect;
 
 import br.edu.vianna.trabalho_fpoo_bda.view.patient.PatientSearch;
+import br.edu.vianna.trabalho_fpoo_bda.view.professional.ProfessionalSearch;
 import javax.swing.JFrame;
 
 /**
@@ -66,6 +67,11 @@ public class CollectNew extends javax.swing.JDialog {
         jlvlProfissional.setText("Profissional coletor");
 
         jbtnBuscaProfissional.setText("Buscar");
+        jbtnBuscaProfissional.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnBuscaProfissionalActionPerformed(evt);
+            }
+        });
 
         jlblCidade.setText("Cidade");
 
@@ -180,6 +186,13 @@ public class CollectNew extends javax.swing.JDialog {
     private void jbtnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_jbtnCancelActionPerformed
+
+    private void jbtnBuscaProfissionalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBuscaProfissionalActionPerformed
+        ProfessionalSearch psearch = new ProfessionalSearch((JFrame)this.getParent(), true);
+        psearch.setLocationRelativeTo(this);
+        String retorno = psearch.getProfessional();
+        System.out.println(retorno);
+    }//GEN-LAST:event_jbtnBuscaProfissionalActionPerformed
 
     /**
      * @param args the command line arguments

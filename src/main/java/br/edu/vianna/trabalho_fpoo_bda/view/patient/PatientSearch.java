@@ -29,17 +29,19 @@ public class PatientSearch extends javax.swing.JDialog {
 
         jtxtBusca = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtblResultado = new javax.swing.JTable();
         jbtnAction = new javax.swing.JButton();
         jbtnBuscar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Buscar paciente");
         setMinimumSize(new java.awt.Dimension(300, 290));
+        setPreferredSize(new java.awt.Dimension(300, 300));
         setResizable(false);
         setSize(new java.awt.Dimension(300, 290));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtblResultado.setAutoCreateRowSorter(true);
+        jtblResultado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -62,14 +64,14 @@ public class PatientSearch extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setColumnSelectionAllowed(true);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(1).setMinWidth(100);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(100);
-            jTable1.getColumnModel().getColumn(1).setMaxWidth(100);
+        jtblResultado.setColumnSelectionAllowed(true);
+        jtblResultado.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jtblResultado);
+        jtblResultado.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (jtblResultado.getColumnModel().getColumnCount() > 0) {
+            jtblResultado.getColumnModel().getColumn(1).setMinWidth(100);
+            jtblResultado.getColumnModel().getColumn(1).setPreferredWidth(100);
+            jtblResultado.getColumnModel().getColumn(1).setMaxWidth(100);
         }
 
         jbtnAction.setText("Editar");
@@ -117,11 +119,14 @@ public class PatientSearch extends javax.swing.JDialog {
 
     private void jbtnActionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActionActionPerformed
         // A ação depende de que tela invocou. Se foi do menu "Paciente"
-        // oferece para editar. Se veio da criação
+        // oferece para editar. Se veio da criação de coleta, retorna 
+        // o paciente selecionado na lista.
     }//GEN-LAST:event_jbtnActionActionPerformed
 
-    // Retorna o paciente selecionado quando o for
+    // Retorna o paciente selecionado quando o for chamado pela tela
+    // de cadastro de coleta
     public String getPatient() {
+        this.jbtnAction.setText("Inserir");
         this.setVisible(true);
         return "it works";
     }
@@ -170,9 +175,9 @@ public class PatientSearch extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton jbtnAction;
     private javax.swing.JButton jbtnBuscar;
+    private javax.swing.JTable jtblResultado;
     private javax.swing.JTextField jtxtBusca;
     // End of variables declaration//GEN-END:variables
 

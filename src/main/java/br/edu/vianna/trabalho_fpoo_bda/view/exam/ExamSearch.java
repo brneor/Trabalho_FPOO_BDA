@@ -3,18 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.vianna.trabalho_fpoo_bda.view.professional;
+package br.edu.vianna.trabalho_fpoo_bda.view.exam;
 
 /**
  *
  * @author breno
  */
-public class ProfessionalSearch extends javax.swing.JDialog {
+public class ExamSearch extends javax.swing.JDialog {
 
     /**
-     * Creates new form ProfessionalNew
+     * Creates new form ExamSearch
      */
-    public ProfessionalSearch(java.awt.Frame parent, boolean modal) {
+    public ExamSearch(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -28,34 +28,28 @@ public class ProfessionalSearch extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jtxtBusca = new javax.swing.JTextField();
-        jbtnBusca = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jtblResultado = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable();
+        jtxtBusca = new javax.swing.JTextField();
+        jbtnBuscar = new javax.swing.JButton();
         jbtnAction = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Busca profissional");
-        setMinimumSize(new java.awt.Dimension(300, 300));
-        setResizable(false);
-        setSize(new java.awt.Dimension(300, 290));
+        setTitle("Busca exame");
 
-        jbtnBusca.setText("Buscar");
-
-        jtblResultado.setAutoCreateRowSorter(true);
-        jtblResultado.setModel(new javax.swing.table.DefaultTableModel(
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Nome", "Identificação"
+                "Identificação", "Teste", "Paciente"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -66,19 +60,18 @@ public class ProfessionalSearch extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jtblResultado);
-        if (jtblResultado.getColumnModel().getColumnCount() > 0) {
-            jtblResultado.getColumnModel().getColumn(1).setMinWidth(100);
-            jtblResultado.getColumnModel().getColumn(1).setPreferredWidth(100);
-            jtblResultado.getColumnModel().getColumn(1).setMaxWidth(100);
+        jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setResizable(false);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(50);
+            jTable1.getColumnModel().getColumn(1).setResizable(false);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(50);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(150);
         }
 
-        jbtnAction.setText("Editar");
-        jbtnAction.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnActionActionPerformed(evt);
-            }
-        });
+        jbtnBuscar.setText("Buscar");
+
+        jbtnAction.setText("Visualizar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -87,44 +80,32 @@ public class ProfessionalSearch extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jtxtBusca, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jbtnBusca))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jbtnAction)))
+                        .addComponent(jbtnAction))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jtxtBusca)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtnBuscar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtxtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtnBusca))
+                    .addComponent(jbtnBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jbtnAction)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jbtnActionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbtnActionActionPerformed
-
-    // Retorna o profissional selecionado quando o for chamado pela tela
-    // de cadastro de coleta
-    public String getProfessional() {
-        this.jbtnAction.setText("Inserir");
-        this.setVisible(true);
-        return "it works";
-    }
 
     /**
      * @param args the command line arguments
@@ -143,23 +124,20 @@ public class ProfessionalSearch extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ProfessionalSearch.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExamSearch.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ProfessionalSearch.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExamSearch.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ProfessionalSearch.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExamSearch.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ProfessionalSearch.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExamSearch.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ProfessionalSearch dialog = new ProfessionalSearch(new javax.swing.JFrame(), true);
+                ExamSearch dialog = new ExamSearch(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -173,9 +151,9 @@ public class ProfessionalSearch extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JButton jbtnAction;
-    private javax.swing.JButton jbtnBusca;
-    private javax.swing.JTable jtblResultado;
+    private javax.swing.JButton jbtnBuscar;
     private javax.swing.JTextField jtxtBusca;
     // End of variables declaration//GEN-END:variables
 }
