@@ -24,19 +24,18 @@ public class UserDAO implements IGenericsDAO<User, Integer> {
     public void inserir(User obj) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "INSERT INTO Usuario ( login, tipoUsuario, cpf, senha, nome )"
-                + "Values(?,?,?,?,?)";
+        String sql = "INSERT INTO Usuario ( login, cpf, senha, nome )"
+                + "Values(?,?,?,?)";
 
         PreparedStatement st = c.prepareStatement(sql);
 
         st.setInt(1, obj.getIdLogin());
-        st.setObject(2, obj.getTipoUsuario());
-        st.setInt(3, obj.getCpf());
-        st.setString(5, obj.getSenha());
+        st.setInt(2, obj.getCpf());
+        st.setString(3, obj.getSenha());
         st.setString(4, obj.getNome());
 
         st.executeUpdate();
-
+        
     }
 
     @Override
@@ -46,7 +45,6 @@ public class UserDAO implements IGenericsDAO<User, Integer> {
         String sql = "UPDATE Usuario "
                 + "SET  "
                 + "login = ?  "
-                + "tipoUsuario = ?  "
                 + "cpf = ?  "
                 + "nome = ?  "
                 + "senha = ?  "
@@ -55,11 +53,10 @@ public class UserDAO implements IGenericsDAO<User, Integer> {
         PreparedStatement st = c.prepareStatement(sql);
 
         st.setInt(1, obj.getIdLogin());
-        st.setObject(2, obj.getTipoUsuario());
-        st.setInt(3, obj.getCpf());
-        st.setString(4, obj.getNome());
-        st.setString(5, obj.getSenha());
-        st.setInt(6, obj.getIdLogin());
+        st.setInt(2, obj.getCpf());
+        st.setString(3, obj.getNome());
+        st.setString(4, obj.getSenha());
+        st.setInt(5, obj.getIdLogin());
         
         st.executeUpdate();
     }
@@ -95,7 +92,7 @@ public class UserDAO implements IGenericsDAO<User, Integer> {
         User user = null;
         if (rs.next()) {
             user = new User(rs.getInt("login"),
-                    new Usertype(),//O que colocar
+                    new Usertype(rs.getInt("id"), rs.getString("descricao")),
                     rs.getInt("cpf"),
                     rs.getString("nome"),
                     rs.getString("senha"));
