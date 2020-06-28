@@ -25,7 +25,7 @@ public class UserDAO implements IGenericsDAO<User, Integer> {
         Connection c = ConnectionSingleton.getConnection();
 
         String sql = "INSERT INTO Usuario ( login, tipousuario, cpf, senha, nome )"
-                + "Values(?,?,?,?)";
+                + "Values(?,?,?,?,?)";
 
         PreparedStatement st = c.prepareStatement(sql);
 

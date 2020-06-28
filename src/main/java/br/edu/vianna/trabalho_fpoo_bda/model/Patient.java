@@ -12,11 +12,11 @@ import java.util.Date;
  * @author breno
  */
 public class Patient extends User {
-    private String cpf;
     private boolean risco;
     private Date dataNascimento;
 
     public Patient(String cpf, boolean risco, Date dataNascimento) {
+        this.setCpf(cpf);
         this.risco = risco;
         this.dataNascimento = dataNascimento;
     }
