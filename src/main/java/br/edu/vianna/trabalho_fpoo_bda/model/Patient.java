@@ -12,25 +12,16 @@ import java.util.Date;
  * @author breno
  */
 public class Patient extends User {
-    private int cpf;
+    private String cpf;
     private boolean risco;
     private Date dataNascimento;
 
-    public Patient(int cpf, boolean risco, Date dataNascimento) {
-        this.cpf = cpf;
+    public Patient(String cpf, boolean risco, Date dataNascimento) {
         this.risco = risco;
         this.dataNascimento = dataNascimento;
     }
 
     public Patient() {
-    }
-
-    public int getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(int cpf) {
-        this.cpf = cpf;
     }
 
     public boolean isRisco() {

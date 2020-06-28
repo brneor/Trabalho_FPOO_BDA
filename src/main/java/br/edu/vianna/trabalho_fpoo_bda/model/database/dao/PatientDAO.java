@@ -24,12 +24,12 @@ public class PatientDAO implements IGenericsDAO<Patient, Integer> {
     public void inserir(Patient obj) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "INSERT INTO Paciente ( cpf, risco, cpf, dataNascimento)"
+        String sql = "INSERT INTO Paciente ( cpf, risco, dataNascimento)"
                 + "Values(?,?,?,?)";
 
         PreparedStatement st = c.prepareStatement(sql);
 
-        st.setInt(1, obj.getCpf());
+        st.setString(1, obj.getCpf());
         st.setBoolean(2, obj.isRisco());
         st.setDate(3, (Date) obj.getDataNascimento());
 
@@ -49,7 +49,7 @@ public class PatientDAO implements IGenericsDAO<Patient, Integer> {
 
         PreparedStatement st = c.prepareStatement(sql);
 
-        st.setInt(1, obj.getCpf());
+        st.setString(1, obj.getCpf());
         st.setBoolean(2, obj.isRisco());
         st.setDate(3, (Date) obj.getDataNascimento());
         
@@ -64,7 +64,7 @@ public class PatientDAO implements IGenericsDAO<Patient, Integer> {
                 + "WHERE id = ?";
         PreparedStatement st = c.prepareStatement(sql);
         
-        st.setInt(1, obj.getCpf());
+        st.setString(1, obj.getCpf());
         
         st.executeUpdate();
     }
@@ -84,7 +84,7 @@ public class PatientDAO implements IGenericsDAO<Patient, Integer> {
         ResultSet rs = st.executeQuery();
         Patient p = null;
         if(rs.next()){
-            p = new Patient(rs.getInt("cpf"), 
+            p = new Patient(rs.getString("cpf"), 
                     rs.getBoolean("risco"), 
                     rs.getDate("dataNascimento"));
             return p;

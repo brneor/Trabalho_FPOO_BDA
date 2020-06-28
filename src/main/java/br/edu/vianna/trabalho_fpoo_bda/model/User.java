@@ -11,22 +11,14 @@ package br.edu.vianna.trabalho_fpoo_bda.model;
  */
 public class User {
     private String login;
-    private int cpf;
+    private String cpf;
     private Usertype tipoUsuario;
     private String nome, senha;
-
-    public User(String login, Usertype tipoUsuario, int cpf, String nome, String senha) {
-        this.login = login;
-        this.tipoUsuario = tipoUsuario;
-        this.cpf = cpf;
-        this.nome = nome;
-        this.senha = senha;
-    }
 
     public User() {
     }
 
-    public User(String login, int cpf, Usertype tipoUsuario, String nome, String senha) {
+    public User(String login, String cpf, Usertype tipoUsuario, String nome, String senha) {
         this.login = login;
         this.cpf = cpf;
         this.tipoUsuario = tipoUsuario;
@@ -42,11 +34,11 @@ public class User {
         this.login = login;
     }
 
-    public int getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(int cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
@@ -73,6 +65,6 @@ public class User {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-    
-    
+
+        
 }
