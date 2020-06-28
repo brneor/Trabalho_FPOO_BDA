@@ -74,7 +74,7 @@ public class PatientDAO implements IGenericsDAO<Patient, Integer> {
         Connection c = ConnectionSingleton.getConnection();
         
         String sql = "SELECT * FROM Paciente p\n"
-                + "INNER JOIN tipoUsuario tpUser ON (p.cpf = tpUser.id) "
+                + "INNER JOIN Usuario us ON (p.cpf = us.cpf) "
                 + "WHERE p.id = ?";
         
         PreparedStatement st = c.prepareStatement(sql);
@@ -99,7 +99,7 @@ public class PatientDAO implements IGenericsDAO<Patient, Integer> {
         Connection c = ConnectionSingleton.getConnection();
         
         String sql = "SELECT count(*) FROM Paciente p "
-                + "INNER JOIN tipoUsuario tpUser ON (p.cpf = tpUser.id) ";
+                  + "INNER JOIN Usuario us ON (p.cpf = us.cpf) ";
         
         PreparedStatement st = c.prepareStatement(sql);
         
