@@ -76,7 +76,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jlblStatusBar.setText("Usuário:");
+        jlblStatusBar.setText("Usuário: ");
         jlblStatusBar.setMinimumSize(new java.awt.Dimension(0, 20));
 
         jmSistema.setText("Sistema");
@@ -118,7 +118,6 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        createMenu();
         createWebivew();
         callLogin();
     }//GEN-LAST:event_formWindowOpened
@@ -136,6 +135,9 @@ public class Main extends javax.swing.JFrame {
         login.setLocationRelativeTo(this);
         
         loggedUser = login.getLoggedUser();
+        
+        jlblStatusBar.setText(jlblStatusBar.getText() + loggedUser.getNome() + " [" + loggedUser.getTipoUsuario().getDescricao() + "]");
+        createMenu(loggedUser.getTipoUsuario().getId());
     }
     // Cria um webview JavaFX para ser exibido na página principal.
     private void createWebivew() {
@@ -154,9 +156,6 @@ public class Main extends javax.swing.JFrame {
         });
     }
     
-    private void createMenu() {
-        createMenu(2);
-    }
     private void createMenu(int userType) {
         // Cria os menus principais com base no tipo de usuário logado
         switch (userType) {
@@ -169,8 +168,10 @@ public class Main extends javax.swing.JFrame {
                 createMenuResponsavelTecnico();
                 break;
             case 3:
+                createMenuSupervisor();
                 break;
             case 4:
+                createMenuPaciente();
                 break;
         }
     }
@@ -293,6 +294,13 @@ public class Main extends javax.swing.JFrame {
         
         // Seta a barra de menu para o jmbMainMenu
         this.setJMenuBar(jmbMainMenu);
+    }
+    
+    private void createMenuSupervisor(){
+        
+    }
+    
+    private void createMenuPaciente(){
     }
     
     private void jmiPatientNewActionPerformed(java.awt.event.ActionEvent evt) {

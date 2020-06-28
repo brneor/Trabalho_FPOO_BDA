@@ -10,12 +10,13 @@ package br.edu.vianna.trabalho_fpoo_bda.model;
  * @author natha
  */
 public class User {
-    private int id, cpf;
+    private String login;
+    private int cpf;
     private Usertype tipoUsuario;
     private String nome, senha;
 
-    public User(int idLogin, Usertype tipoUsuario, int cpf, String nome, String senha) {
-        this.id = idLogin;
+    public User(String login, Usertype tipoUsuario, int cpf, String nome, String senha) {
+        this.login = login;
         this.tipoUsuario = tipoUsuario;
         this.cpf = cpf;
         this.nome = nome;
@@ -25,20 +26,20 @@ public class User {
     public User() {
     }
 
-    public int getIdLogin() {
-        return id;
-    }
-
-    public void setIdLogin(int idLogin) {
-        this.id = idLogin;
-    }
-
-    public Usertype getTipoUsuario() {
-        return tipoUsuario;
-    }
-
-    public void setTipoUsuario(Usertype tipoUsuario) {
+    public User(String login, int cpf, Usertype tipoUsuario, String nome, String senha) {
+        this.login = login;
+        this.cpf = cpf;
         this.tipoUsuario = tipoUsuario;
+        this.nome = nome;
+        this.senha = senha;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public int getCpf() {
@@ -47,6 +48,14 @@ public class User {
 
     public void setCpf(int cpf) {
         this.cpf = cpf;
+    }
+
+    public Usertype getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(Usertype tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 
     public String getNome() {
