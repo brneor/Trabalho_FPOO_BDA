@@ -5,9 +5,12 @@
  */
 package br.edu.vianna.trabalho_fpoo_bda.view;
 
+import br.edu.vianna.trabalho_fpoo_bda.model.User;
+import br.edu.vianna.trabalho_fpoo_bda.view.about.About;
 import br.edu.vianna.trabalho_fpoo_bda.view.collect.CollectNew;
 import br.edu.vianna.trabalho_fpoo_bda.view.exam.ExamNew;
 import br.edu.vianna.trabalho_fpoo_bda.view.exam.ExamSearch;
+import br.edu.vianna.trabalho_fpoo_bda.view.login.Login;
 import br.edu.vianna.trabalho_fpoo_bda.view.patient.PatientNew;
 import br.edu.vianna.trabalho_fpoo_bda.view.patient.PatientSearch;
 import br.edu.vianna.trabalho_fpoo_bda.view.professional.ProfessionalNew;
@@ -28,6 +31,7 @@ import javax.swing.JMenuItem;
  * @author breno
  */
 public class Main extends javax.swing.JFrame {
+    private User loggedUser = new User(); 
 
     /**
      * Creates new form Main
@@ -78,6 +82,11 @@ public class Main extends javax.swing.JFrame {
         jmSistema.setText("Sistema");
 
         jmiSobre.setText("Sobre");
+        jmiSobre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiSobreActionPerformed(evt);
+            }
+        });
         jmSistema.add(jmiSobre);
         jmSistema.add(jSeparator1);
 
@@ -111,9 +120,24 @@ public class Main extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         createMenu();
         createWebivew();
+        callLogin();
     }//GEN-LAST:event_formWindowOpened
+
+    private void jmiSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSobreActionPerformed
+        About sobre = new About(this, true);
+        sobre.setLocationRelativeTo(this);
+        sobre.setVisible(true);
+    }//GEN-LAST:event_jmiSobreActionPerformed
     
-// Cria um webview JavaFX para ser exibido na página principal.
+    // Chama o login
+    private void callLogin() {
+        Login login = new Login(this, true);
+        
+        login.setLocationRelativeTo(this);
+        
+        loggedUser = login.getLoggedUser();
+    }
+    // Cria um webview JavaFX para ser exibido na página principal.
     private void createWebivew() {
         // Cria o JFXPanel do tamanho da janela principal descontando o menu
         // e o espaço inferior para o botão.
