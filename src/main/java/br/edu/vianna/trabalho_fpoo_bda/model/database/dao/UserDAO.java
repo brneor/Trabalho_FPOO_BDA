@@ -24,15 +24,16 @@ public class UserDAO implements IGenericsDAO<User, Integer> {
     public void inserir(User obj) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "INSERT INTO Usuario ( login, cpf, senha, nome )"
+        String sql = "INSERT INTO Usuario ( login, tipousuario, cpf, senha, nome )"
                 + "Values(?,?,?,?)";
 
         PreparedStatement st = c.prepareStatement(sql);
 
         st.setString(1, obj.getLogin());
-        st.setInt(2, obj.getCpf());
-        st.setString(3, obj.getSenha());
-        st.setString(4, obj.getNome());
+        st.setInt(2, obj.getTipoUsuario().getId());
+        st.setString(3, obj.getCpf());
+        st.setString(4, obj.getSenha());
+        st.setString(5, obj.getNome());
 
         st.executeUpdate();
         
@@ -54,7 +55,7 @@ public class UserDAO implements IGenericsDAO<User, Integer> {
         PreparedStatement st = c.prepareStatement(sql);
 
         st.setString(1, obj.getLogin());
-        st.setInt(2, obj.getCpf());
+        st.setString(2, obj.getCpf());
         st.setInt(3, obj.getTipoUsuario().getId());
         st.setString(4, obj.getNome());
         st.setString(5, obj.getSenha());
@@ -98,8 +99,8 @@ public class UserDAO implements IGenericsDAO<User, Integer> {
         User user = null;
         if (rs.next()) {
             user = new User(rs.getString("login"),
+                    rs.getString("cpf"),
                     new Usertype(rs.getInt("id"), rs.getString("descricao")),
-                    rs.getInt("cpf"),
                     rs.getString("nome"),
                     rs.getString("senha"));
 

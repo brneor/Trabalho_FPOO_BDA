@@ -9,6 +9,7 @@ import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
 import br.edu.vianna.trabalho_fpoo_bda.model.Exam;
 import br.edu.vianna.trabalho_fpoo_bda.model.database.connection.ConnectionSingleton;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
@@ -23,6 +24,8 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer>{
         
         String sql = "INSERT INTO Exame ( risco, cpf, dataNascimento)"
                 + "Values(?,?,?,?)";
+        
+        PreparedStatement st = c.prepareStatement(sql);
     }
 
     @Override

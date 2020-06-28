@@ -82,36 +82,48 @@ public class CollectDAO implements IGenericsDAO<Collect, Integer> {
     public Collect buscarPeloId(Integer key) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "SELECT * FROM Paciente p\n"
-                + "INNER JOIN Usuario us ON (p.cpf = us.cpf) "
-                + "WHERE p.id = ?";
+        String sql = "SELECT * FROM Coleta c\n"
+                + "INNER JOIN Paciente p ON (c.idPaciente = p.cpf) "
+                + "INNER JOIN  ProfissionalSaude prf ON (c.idProfissionalSaude = prf.idProfissionalSaude) "
+                + "INNER JOIN   Material m ON (c.idMaterial = m.id) "
+                + "WHERE c.id = ?";
 
         PreparedStatement st = c.prepareStatement(sql);
 
         st.setInt(1, key);
 
         ResultSet rs = st.executeQuery();
-        
+
         Collect co = null;
-        if(rs.next()){
+        if (rs.next()) {
             co = new Collect(rs.getInt("id"),
-                    new Patient(rs.getInt("cpf"), rs.getBoolean("risco"), rs.getDate("dataNascimento")), 
-                    new Professional(rs.getInt("idProfissionalSaude"), new ProfessionalType(rs.getInt("id"), rs.getString("descricao"))), 
-                    new Material(rs.getInt("id"), rs.getString("descricao")), 
-                    rs.getBoolean("realizado"), 
-                    rs.getString("cidade"), 
-                    rs.getDate("dataColeta"), 
+                    new Patient(rs.getString("cpf"), rs.getBoolean("risco"), rs.getDate("dataNascimento")),
+                    new Professional(rs.getInt("idProfissionalSaude"), new ProfessionalType(rs.getInt("id"), rs.getString("descricao"))),
+                    new Material(rs.getInt("id"), rs.getString("descricao")),
+                    rs.getBoolean("realizado"),
+                    rs.getString("cidade"),
+                    rs.getDate("dataColeta"),
                     rs.getDate("horaColeta"));
-            
+
             return co;
-        }else{
+        } else {
             return co;
         }
+
+        return new Collect();
     }
 
     @Override
     public int quantidade() throws NotConnectionException, SQLException {
-        return 0;
+        Connection c = ConnectionSingleton.getConnection();
+        String sql = "SELECT count(*) FROM Coleta c "
+                + "INNER JOIN Exame ex ON (c.id = ex.idColeta) ";
+
+        PreparedStatement st = c.prepareStatement(sql);
+
+        ResultSet rs = st.executeQuery();
+
+        return rs.getInt(1);
     }
 
 }

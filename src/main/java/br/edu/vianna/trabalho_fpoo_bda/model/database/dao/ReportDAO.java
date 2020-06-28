@@ -6,47 +6,38 @@
 package br.edu.vianna.trabalho_fpoo_bda.model.database.dao;
 
 import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
-import br.edu.vianna.trabalho_fpoo_bda.model.Professional;
+import br.edu.vianna.trabalho_fpoo_bda.model.Report;
 import br.edu.vianna.trabalho_fpoo_bda.model.database.connection.ConnectionSingleton;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
  *
  * @author natha
  */
-public class ProfessionalDAO implements IGenericsDAO<Professional, Integer>{
+public class ReportDAO implements IGenericsDAO<Report, Integer>{
 
     @Override
-    public void inserir(Professional obj) throws NotConnectionException, SQLException {
-         Connection c = ConnectionSingleton.getConnection();
-         
-         String sql = "INSERT INTO ProfessionalSaude ( idProfissionalSaude, descricao)"
-                + "Values(?,?)";
-         
-         PreparedStatement st = c.prepareStatement(sql);
-         
-         st.setInt(1, obj.getId());
-<<<<<<< HEAD
+    public void inserir(Report obj) throws NotConnectionException, SQLException {
+        Connection c = ConnectionSingleton.getConnection();
         
-=======
-         st.setString(2, obj.getTipo().getDescricao());
->>>>>>> d718b0056c9cf1862c905f705e6757cf14209614
+        String sql = "INSERT INTO Relatorio ( id, idPaciente, dataNascimento)"
+                + "Values(?,?,?,?)";
+
     }
 
     @Override
-    public void alterar(Professional obj) throws NotConnectionException, SQLException {
+    public void alterar(Report obj) throws NotConnectionException, SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void apagar(Professional obj) throws NotConnectionException, SQLException {
+    public void apagar(Report obj) throws NotConnectionException, SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Professional buscarPeloId(Integer key) throws NotConnectionException, SQLException {
+    public Report buscarPeloId(Integer key) throws NotConnectionException, SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

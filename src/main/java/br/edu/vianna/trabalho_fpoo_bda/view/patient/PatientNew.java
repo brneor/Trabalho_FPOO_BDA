@@ -5,7 +5,14 @@
  */
 package br.edu.vianna.trabalho_fpoo_bda.view.patient;
 
+import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
+import br.edu.vianna.trabalho_fpoo_bda.model.Patient;
+import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.PatientDAO;
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractButton;
 
 /**
@@ -184,6 +191,28 @@ public class PatientNew extends javax.swing.JDialog {
             }
         }
         System.out.println("Grupo de risco? " + (jchkRisco.isSelected() == true ? "Sim" : "Não"));
+        
+        float teste = Float.parseFloat("123");
+        System.out.println(teste);
+        String cpf = jftxtCPF.getText().replaceAll("\\.|\\-", "");
+        Boolean risco = jchkRisco.isSelected();
+        Date nascimento = new Date(jftxtNascimento.getText());
+        System.out.println(nascimento);
+        
+        Patient toSave = new Patient(
+                cpf,
+                risco,
+                nascimento
+        );
+        PatientDAO pdao = new PatientDAO();
+        
+        try {
+            pdao.inserir(toSave);
+        } catch (NotConnectionException ex) {
+            Logger.getLogger(PatientNew.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PatientNew.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jbtnSalvarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
