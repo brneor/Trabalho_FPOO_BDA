@@ -45,11 +45,6 @@
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="jlblPrimeiroAcesso" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jlUserTip" alignment="0" min="-2" pref="117" max="-2" attributes="0"/>
-                                  <Component id="jlPasswordTip" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="jbtnCancelar" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jbtnLogin" min="-2" max="-2" attributes="0"/>
@@ -76,17 +71,10 @@
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jlblPrimeiroAcesso" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="28" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                      <Component id="jbtnLogin" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jbtnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="jlUserTip" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jlPasswordTip" min="-2" max="-2" attributes="0"/>
-                  </Group>
+              <EmptySpace pref="39" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jbtnLogin" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbtnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
           </Group>
@@ -121,22 +109,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnCancelarActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jlUserTip">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Cantarell" size="12" style="2"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="User: breno"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jlPasswordTip">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Cantarell" size="12" style="2"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Password: fwq321"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="jtxtSenha">
     </Component>

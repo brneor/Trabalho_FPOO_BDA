@@ -5,10 +5,15 @@
  */
 package br.edu.vianna.trabalho_fpoo_bda.view.login;
 
+import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
 import br.edu.vianna.trabalho_fpoo_bda.model.User;
+import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.UserDAO;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
+import java.sql.SQLException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -41,8 +46,6 @@ public class Login extends javax.swing.JDialog {
         jtxtUsuario = new javax.swing.JTextField();
         jbtnLogin = new javax.swing.JButton();
         jbtnCancelar = new javax.swing.JButton();
-        jlUserTip = new javax.swing.JLabel();
-        jlPasswordTip = new javax.swing.JLabel();
         jtxtSenha = new javax.swing.JPasswordField();
         jlblPrimeiroAcesso = new javax.swing.JLabel();
 
@@ -71,12 +74,6 @@ public class Login extends javax.swing.JDialog {
             }
         });
 
-        jlUserTip.setFont(new java.awt.Font("Cantarell", 2, 12)); // NOI18N
-        jlUserTip.setText("User: breno");
-
-        jlPasswordTip.setFont(new java.awt.Font("Cantarell", 2, 12)); // NOI18N
-        jlPasswordTip.setText("Password: fwq321");
-
         jlblPrimeiroAcesso.setForeground(new java.awt.Color(46, 144, 232));
         jlblPrimeiroAcesso.setText("Paciente, é seu primeiro acesso? Clique aqui");
         jlblPrimeiroAcesso.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -101,10 +98,6 @@ public class Login extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jlblPrimeiroAcesso)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jlUserTip, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jlPasswordTip))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jbtnCancelar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jbtnLogin)))))
@@ -123,15 +116,10 @@ public class Login extends javax.swing.JDialog {
                     .addComponent(jtxtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jlblPrimeiroAcesso)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jbtnLogin)
-                        .addComponent(jbtnCancelar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlUserTip)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jlPasswordTip)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtnLogin)
+                    .addComponent(jbtnCancelar))
                 .addGap(15, 15, 15))
         );
 
@@ -139,24 +127,56 @@ public class Login extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnLoginActionPerformed
+        // Checa se os campos de usuário e senha foram preenchidos
+        if (jtxtUsuario.getText().equals("") || jtxtSenha.getText().equals("")) {
+            emptyLoginField();
+            return;
+        }
+
         // Checa as informações do usuário na base, 
         // atualiza o loggedUser e fecha a tela.
-        if (jtxtUsuario.getText().equals("breno") && jtxtSenha.getText().equals("fwq321")) {
-//            blnLoggedIn = true;
-            System.out.println("Logando...");
-            dispose();
+        UserDAO usuarioDao = new UserDAO();
+        User usuario = null;
+        try {
+            usuario = usuarioDao.buscarPeloId(jtxtUsuario.getText());
+        } catch (NotConnectionException ex) {
+            System.out.println("No connection");
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            System.out.println("outro erro");
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if (usuario == null) {
+            // Usuário não encontrado.
+            invalidLoginInfo();
         } else {
-            JOptionPane.showMessageDialog(null, "My Goodness, this is so concise");
+            System.out.println("Conferindo informações para o usuário " + usuario.getLogin());
+            if (jtxtSenha.getText().equals(usuario.getSenha())) {
+                // Login bem sucedido! Informa o usuário que vai ser
+                // retornado para a tela principal.
+                System.out.println("Login bem sucedido!");
+                this.loggedUser = usuario;
+                this.dispose();
+            } else {
+                // Senha incorreta.
+                invalidLoginInfo();
+            }
         }
     }//GEN-LAST:event_jbtnLoginActionPerformed
 
     private void jbtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCancelarActionPerformed
         // Se cancela o login, finaliza a aplicação.
-        this.dispose();
-        //        System.exit(0);
+//        this.dispose();
+        System.exit(0);
     }//GEN-LAST:event_jbtnCancelarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // Seta o botão de login como default
+        // (é acionado com a tecla enter)
+        this.getRootPane().setDefaultButton(jbtnLogin);
+        
+        // Sublina o label de primeiro acesso para o paciente
         Font font = jlblPrimeiroAcesso.getFont();
         Map attributes = font.getAttributes();
         attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
@@ -167,6 +187,16 @@ public class Login extends javax.swing.JDialog {
     public User getLoggedUser() {
         this.setVisible(true);
         return loggedUser;
+    }
+    
+    // Alerta que algum dado informado no login é inválido
+    private void invalidLoginInfo() {
+        JOptionPane.showMessageDialog(null, "Usuário ou senha incorretos!");
+    }
+    
+    // Alerta que algum dado não foi informado
+    private void emptyLoginField() {
+        JOptionPane.showMessageDialog(null, "Informe usuário e senha!");
     }
     
     /**
@@ -214,8 +244,6 @@ public class Login extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jbtnCancelar;
     private javax.swing.JButton jbtnLogin;
-    private javax.swing.JLabel jlPasswordTip;
-    private javax.swing.JLabel jlUserTip;
     private javax.swing.JLabel jlblPrimeiroAcesso;
     private javax.swing.JLabel jlblSenha;
     private javax.swing.JLabel jlblUsuario;

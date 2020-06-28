@@ -13,19 +13,19 @@ public class Usertype {
     private int id;
     private String descricao;
 
-    public Usertype(int idTipoUsuario, String descricao) {
-        this.id = idTipoUsuario;
+    public Usertype(int id, String descricao) {
+        this.id = id;
         this.descricao = descricao;
     }
 
     public Usertype() {
     }
 
-    public int getIdTipoUsuario() {
+    public int getId() {
         return id;
     }
 
-    public void setIdTipoUsuario(int idTipoUsuario) {
+    public void setId(int idTipoUsuario) {
         this.id = idTipoUsuario;
     }
 

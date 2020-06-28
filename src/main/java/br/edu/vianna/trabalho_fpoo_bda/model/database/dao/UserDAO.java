@@ -29,7 +29,7 @@ public class UserDAO implements IGenericsDAO<User, Integer> {
 
         PreparedStatement st = c.prepareStatement(sql);
 
-        st.setInt(1, obj.getIdLogin());
+        st.setString(1, obj.getLogin());
         st.setInt(2, obj.getCpf());
         st.setString(3, obj.getSenha());
         st.setString(4, obj.getNome());
@@ -45,18 +45,20 @@ public class UserDAO implements IGenericsDAO<User, Integer> {
         String sql = "UPDATE Usuario "
                 + "SET  "
                 + "login = ?  "
+                + "tipousuario = ? "
                 + "cpf = ?  "
                 + "nome = ?  "
                 + "senha = ?  "
-                + "WHERE id = ?";
+                + "WHERE login = ?";
 
         PreparedStatement st = c.prepareStatement(sql);
 
-        st.setInt(1, obj.getIdLogin());
+        st.setString(1, obj.getLogin());
         st.setInt(2, obj.getCpf());
-        st.setString(3, obj.getNome());
-        st.setString(4, obj.getSenha());
-        st.setInt(5, obj.getIdLogin());
+        st.setInt(3, obj.getTipoUsuario().getId());
+        st.setString(4, obj.getNome());
+        st.setString(5, obj.getSenha());
+        st.setString(6, obj.getLogin());
         
         st.executeUpdate();
     }
@@ -66,32 +68,36 @@ public class UserDAO implements IGenericsDAO<User, Integer> {
         Connection c = ConnectionSingleton.getConnection();
 
         String sql = "DELETE FROM Usuario "
-                + "WHERE id = ?";
+                + "WHERE login = ?";
 
         PreparedStatement st = c.prepareStatement(sql);
 
-        st.setInt(1, obj.getIdLogin());
+        st.setString(1, obj.getLogin());
         
         st.executeUpdate();
     }
 
     @Override
-    public User buscarPeloId(Integer key) throws NotConnectionException, SQLException {
+    public User buscarPeloId(Integer key) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+    
+    public User buscarPeloId(String key) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "SELECT * FROM Usuario user\n"
-                + "INNER JOIN tipoUsuario tpUser ON (user.login = tpUser.id) "
-                + "WHERE p.id = ?";
+        String sql = "SELECT * FROM Usuario as u\n"
+                + "INNER JOIN tipoUsuario as tu ON (u.tipoUsuario = tu.id) "
+                + "WHERE u.login = ?";
 
         PreparedStatement st = c.prepareStatement(sql);
 
-        st.setInt(1, key);
+        st.setString(1, key);
 
         ResultSet rs = st.executeQuery();
 
         User user = null;
         if (rs.next()) {
-            user = new User(rs.getInt("login"),
+            user = new User(rs.getString("login"),
                     new Usertype(rs.getInt("id"), rs.getString("descricao")),
                     rs.getInt("cpf"),
                     rs.getString("nome"),

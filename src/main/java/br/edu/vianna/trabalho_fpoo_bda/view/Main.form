@@ -77,7 +77,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jlblStatusBar">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Usu&#xe1;rio:"/>
+        <Property name="text" type="java.lang.String" value="Usu&#xe1;rio: "/>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[0, 20]"/>
         </Property>
