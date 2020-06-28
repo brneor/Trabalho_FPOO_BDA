@@ -28,7 +28,7 @@ public class ProfessionalDAO implements IGenericsDAO<Professional, Integer>{
          PreparedStatement st = c.prepareStatement(sql);
          
          st.setInt(1, obj.getId());
-         st.setString(2, obj.get);
+        
     }
 
     @Override
