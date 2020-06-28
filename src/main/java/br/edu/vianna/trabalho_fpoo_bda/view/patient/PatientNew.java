@@ -7,7 +7,10 @@ package br.edu.vianna.trabalho_fpoo_bda.view.patient;
 
 import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
 import br.edu.vianna.trabalho_fpoo_bda.model.Patient;
+import br.edu.vianna.trabalho_fpoo_bda.model.User;
+import br.edu.vianna.trabalho_fpoo_bda.model.Usertype;
 import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.PatientDAO;
+import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.UserDAO;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Enumeration;
@@ -192,22 +195,31 @@ public class PatientNew extends javax.swing.JDialog {
         }
         System.out.println("Grupo de risco? " + (jchkRisco.isSelected() == true ? "Sim" : "Não"));
         
-        float teste = Float.parseFloat("123");
-        System.out.println(teste);
         String cpf = jftxtCPF.getText().replaceAll("\\.|\\-", "");
         Boolean risco = jchkRisco.isSelected();
         Date nascimento = new Date(jftxtNascimento.getText());
+        String nome = jtxtNome.getText();
         System.out.println(nascimento);
         
-        Patient toSave = new Patient(
+        User uToSave = new User(
+                "",
+                cpf,
+                new Usertype(4, "Paciente"),
+                nome,
+                ""
+        );
+        Patient pToSave = new Patient(
                 cpf,
                 risco,
                 nascimento
         );
+        
         PatientDAO pdao = new PatientDAO();
+        UserDAO udao = new UserDAO();
         
         try {
-            pdao.inserir(toSave);
+            pdao.inserir(pToSave);
+            udao.inserir(uToSave);
         } catch (NotConnectionException ex) {
             Logger.getLogger(PatientNew.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {

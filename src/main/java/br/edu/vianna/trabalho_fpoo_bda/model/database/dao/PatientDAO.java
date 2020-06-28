@@ -9,7 +9,7 @@ import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
 import br.edu.vianna.trabalho_fpoo_bda.model.Patient;
 import br.edu.vianna.trabalho_fpoo_bda.model.database.connection.ConnectionSingleton;
 import java.sql.Connection;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,13 +25,13 @@ public class PatientDAO implements IGenericsDAO<Patient, Integer> {
         Connection c = ConnectionSingleton.getConnection();
 
         String sql = "INSERT INTO Paciente ( cpf, risco, dataNascimento)"
-                + "Values(?,?,?,?)";
+                + "Values(?,?,?)";
 
         PreparedStatement st = c.prepareStatement(sql);
 
         st.setString(1, obj.getCpf());
         st.setBoolean(2, obj.isRisco());
-        st.setDate(3, (Date) obj.getDataNascimento());
+        st.setObject(3, obj.getDataNascimento());
 
         st.executeUpdate();
     }
@@ -51,7 +51,7 @@ public class PatientDAO implements IGenericsDAO<Patient, Integer> {
 
         st.setString(1, obj.getCpf());
         st.setBoolean(2, obj.isRisco());
-        st.setDate(3, (Date) obj.getDataNascimento());
+        st.setObject(3, obj.getDataNascimento());
         
         st.executeUpdate();
     }
