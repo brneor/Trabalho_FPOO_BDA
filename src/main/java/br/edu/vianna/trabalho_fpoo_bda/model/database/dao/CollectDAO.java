@@ -100,7 +100,7 @@ public class CollectDAO implements IGenericsDAO<Collect, Integer> {
         Collect co = null;
         if (rs.next()) {
             co = new Collect(rs.getInt("id"),
-                    new Patient(rs.getString("cpf"), rs.getBoolean("risco"), rs.getDate("dataNascimento")),
+                    new Patient(rs.getString("cpf"), rs.getBoolean("risco"), rs.getDate("dataNascimento"), rs.getString("nome")),
                     new Professional(rs.getInt("id"), new ProfessionalType(rs.getInt("id"), rs.getString("descricao")), rs.getString("nome")),
                     new Material(rs.getInt("id"), rs.getString("descricao")),
                     rs.getBoolean("realizado"),

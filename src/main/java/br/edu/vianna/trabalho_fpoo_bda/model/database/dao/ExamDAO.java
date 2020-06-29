@@ -77,8 +77,7 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer>{
     public Exam buscarPeloId(Integer key) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
         
-         String sql = "SELECT * FROM Exame as ex\n"
-                + "INNER JOIN Relatorio as r ON (ex.id = r.idExame) "
+         String sql = "SELECT * FROM Exame as ex "
                 + "WHERE ex.id = ?";
          
          PreparedStatement st = c.prepareStatement(sql);
@@ -89,8 +88,7 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer>{
          
         Exam ex = null;
         if(rs.next()){
-            
-            
+
         }
         
         return ex;
