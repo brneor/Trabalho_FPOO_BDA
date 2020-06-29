@@ -22,17 +22,13 @@ public class ProfessionalDAO implements IGenericsDAO<Professional, Integer>{
     public void inserir(Professional obj) throws NotConnectionException, SQLException {
          Connection c = ConnectionSingleton.getConnection();
          
-         String sql = "INSERT INTO ProfessionalSaude ( idProfissionalSaude, descricao)"
+         String sql = "INSERT INTO ProfessionalSaude ( id, idTipoProfissional, nome)"
                 + "Values(?,?)";
          
          PreparedStatement st = c.prepareStatement(sql);
          
          st.setInt(1, obj.getId());
-<<<<<<< HEAD
-        
-=======
          st.setString(2, obj.getTipo().getDescricao());
->>>>>>> d718b0056c9cf1862c905f705e6757cf14209614
     }
 
     @Override

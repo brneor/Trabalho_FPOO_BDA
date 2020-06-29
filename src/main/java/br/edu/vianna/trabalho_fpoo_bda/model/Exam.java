@@ -14,15 +14,17 @@ public class Exam {
     private Test teste;
     private ExamResult resultadoExame;
     private Patient paciente;
+    private Collect collect;
 
     public Exam() {
     }
 
-    public Exam(int idExame, Test teste, ExamResult resultadoExame, Patient paciente) {
+    public Exam(int idExame, Test teste, ExamResult resultadoExame, Patient paciente, Collect collect ) {
         this.id = idExame;
         this.teste = teste;
         this.resultadoExame = resultadoExame;
         this.paciente = paciente;
+        this.collect = collect;
     }
 
     public int getIdExame() {
@@ -56,4 +58,13 @@ public class Exam {
     public void setPaciente(Patient paciente) {
         this.paciente = paciente;
     }
+
+    public Collect getCollect() {
+        return collect;
+    }
+
+    public void setCollect(Collect collect) {
+        this.collect = collect;
+    }
+
 }

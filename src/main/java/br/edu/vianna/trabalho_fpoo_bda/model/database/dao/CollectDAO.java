@@ -28,15 +28,18 @@ public class CollectDAO implements IGenericsDAO<Collect, Integer> {
     public void inserir(Collect obj) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "INSERT INTO Coleta (realizado, cidade,dataColeta, horaColeta)"
+        String sql = "INSERT INTO Coleta (idPaciente, idProfissionalSaude, idMaterial, realizado, dataColeta, horaColeta, cidade)"
                 + "Values(?,?,?,?)";
 
         PreparedStatement st = c.prepareStatement(sql);
 
-        st.setBoolean(1, obj.isRealizado());
-        st.setString(2, obj.getCidade());
+        st.setString(1, obj.getPaciente().getCpf());
+        st.setInt(2, obj.getProfissional().getId());
+        st.setInt(3, obj.getMaterial().getIdMaterial());
+        st.setBoolean(4, obj.isRealizado());
         st.setDate(3, (Date) obj.getDataColeta());
         st.setDate(4, (Date) obj.getHoraColeta());
+        st.setString(5, obj.getCidade());
 
         st.executeUpdate();
 
@@ -98,7 +101,7 @@ public class CollectDAO implements IGenericsDAO<Collect, Integer> {
         if (rs.next()) {
             co = new Collect(rs.getInt("id"),
                     new Patient(rs.getString("cpf"), rs.getBoolean("risco"), rs.getDate("dataNascimento")),
-                    new Professional(rs.getInt("idProfissionalSaude"), new ProfessionalType(rs.getInt("id"), rs.getString("descricao"))),
+                    new Professional(rs.getInt("id"), new ProfessionalType(rs.getInt("id"), rs.getString("descricao")), rs.getString("nome")),
                     new Material(rs.getInt("id"), rs.getString("descricao")),
                     rs.getBoolean("realizado"),
                     rs.getString("cidade"),
@@ -110,7 +113,7 @@ public class CollectDAO implements IGenericsDAO<Collect, Integer> {
             return co;
         }
 
-        return new Collect();
+        //return new Collect();
     }
 
     @Override

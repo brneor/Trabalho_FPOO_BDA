@@ -12,13 +12,15 @@ package br.edu.vianna.trabalho_fpoo_bda.model;
 public class Professional {
     private int id;
     private ProfessionalType tipo;
+    private String nome;
 
     public Professional() {
     }
 
-    public Professional(int id, ProfessionalType tipo) {
+    public Professional(int id, ProfessionalType tipo, String nome) {
         this.id = id;
         this.tipo = tipo;
+        this.nome = nome;
     }
 
     public int getId() {
@@ -35,5 +37,13 @@ public class Professional {
 
     public void setTipo(ProfessionalType tipo) {
         this.tipo = tipo;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }
