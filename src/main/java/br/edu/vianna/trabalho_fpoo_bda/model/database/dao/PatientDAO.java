@@ -9,10 +9,10 @@ import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
 import br.edu.vianna.trabalho_fpoo_bda.model.Patient;
 import br.edu.vianna.trabalho_fpoo_bda.model.database.connection.ConnectionSingleton;
 import java.sql.Connection;
-import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -24,14 +24,15 @@ public class PatientDAO implements IGenericsDAO<Patient, Integer> {
     public void inserir(Patient obj) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "INSERT INTO Paciente ( cpf, risco, dataNascimento)"
-                + "Values(?,?,?)";
+        String sql = "INSERT INTO Paciente ( cpf, risco, dataNascimento, nome)"
+                + "Values(?,?,?,?)";
 
         PreparedStatement st = c.prepareStatement(sql);
 
         st.setString(1, obj.getCpf());
         st.setBoolean(2, obj.isRisco());
         st.setObject(3, obj.getDataNascimento());
+        st.setString(4, obj.getNome());
 
         st.executeUpdate();
     }
@@ -45,6 +46,7 @@ public class PatientDAO implements IGenericsDAO<Patient, Integer> {
                 + "cpf = ?  "
                 + "risco = ?  "
                 + "dataNascimento = ?  "
+                + "nome = ? "
                 + "WHERE id = ?";
 
         PreparedStatement st = c.prepareStatement(sql);
@@ -52,6 +54,7 @@ public class PatientDAO implements IGenericsDAO<Patient, Integer> {
         st.setString(1, obj.getCpf());
         st.setBoolean(2, obj.isRisco());
         st.setObject(3, obj.getDataNascimento());
+        st.setString(4, obj.getNome());
         
         st.executeUpdate();
     }
@@ -71,27 +74,34 @@ public class PatientDAO implements IGenericsDAO<Patient, Integer> {
 
     @Override
     public Patient buscarPeloId(Integer key) throws NotConnectionException, SQLException {
+        throw new UnsupportedOperationException();
+    }
+    
+    public ArrayList<Patient> buscar(String nome) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
         
-        String sql = "SELECT * FROM Paciente p\n"
-                + "INNER JOIN Usuario us ON (p.cpf = us.cpf) "
-                + "WHERE p.id = ?";
+        String sql = "SELECT * FROM Paciente p "
+                + "WHERE nome like ? order by nome";
         
         PreparedStatement st = c.prepareStatement(sql);
         
-        st.setInt(1, key);
+        st.setString(1, "%"+nome+"%");
         
         ResultSet rs = st.executeQuery();
-        Patient p = null;
-        if(rs.next()){
-            p = new Patient(rs.getString("cpf"), 
-                    rs.getBoolean("risco"), 
-                    rs.getDate("dataNascimento"));
-            return p;
-        }else {
-            return p;
+        
+        ArrayList<Patient> pacientes = new ArrayList<>();
+        
+        while (rs.next()) {            
+            Patient p = new Patient();
+            p.setCpf(rs.getString("cpf"));
+            p.setDataNascimento(rs.getDate("dataNascimento"));
+            p.setNome(rs.getString("nome"));
+            p.setRisco(rs.getInt("risco") == 1);
+
+            pacientes.add(p);
         }
         
+        return pacientes;
     }
 
     @Override

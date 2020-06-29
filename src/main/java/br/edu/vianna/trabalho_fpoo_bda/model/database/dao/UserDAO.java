@@ -86,7 +86,7 @@ public class UserDAO implements IGenericsDAO<User, Integer> {
     public User buscarPeloId(String key) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "SELECT * FROM Usuario as u\n"
+        String sql = "SELECT * FROM Usuario as u "
                 + "INNER JOIN tipoUsuario as tu ON (u.tipoUsuario = tu.id) "
                 + "WHERE u.login = ?";
 

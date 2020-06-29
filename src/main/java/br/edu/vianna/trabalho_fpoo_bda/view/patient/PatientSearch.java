@@ -6,6 +6,15 @@
 
 package br.edu.vianna.trabalho_fpoo_bda.view.patient;
 
+import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
+import br.edu.vianna.trabalho_fpoo_bda.model.Patient;
+import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.PatientDAO;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author breno
@@ -39,6 +48,11 @@ public class PatientSearch extends javax.swing.JDialog {
         setPreferredSize(new java.awt.Dimension(300, 300));
         setResizable(false);
         setSize(new java.awt.Dimension(300, 290));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jtblResultado.setAutoCreateRowSorter(true);
         jtblResultado.setModel(new javax.swing.table.DefaultTableModel(
@@ -69,9 +83,8 @@ public class PatientSearch extends javax.swing.JDialog {
         jScrollPane1.setViewportView(jtblResultado);
         jtblResultado.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (jtblResultado.getColumnModel().getColumnCount() > 0) {
-            jtblResultado.getColumnModel().getColumn(1).setMinWidth(100);
-            jtblResultado.getColumnModel().getColumn(1).setPreferredWidth(100);
-            jtblResultado.getColumnModel().getColumn(1).setMaxWidth(100);
+            jtblResultado.getColumnModel().getColumn(1).setResizable(false);
+            jtblResultado.getColumnModel().getColumn(1).setPreferredWidth(30);
         }
 
         jbtnAction.setText("Editar");
@@ -82,6 +95,11 @@ public class PatientSearch extends javax.swing.JDialog {
         });
 
         jbtnBuscar.setText("Buscar");
+        jbtnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -122,6 +140,36 @@ public class PatientSearch extends javax.swing.JDialog {
         // oferece para editar. Se veio da criação de coleta, retorna 
         // o paciente selecionado na lista.
     }//GEN-LAST:event_jbtnActionActionPerformed
+
+    private void jbtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBuscarActionPerformed
+        // Cria o model pra manipular a tabela
+        DefaultTableModel model = (DefaultTableModel) jtblResultado.getModel();
+        
+        // Limpa a tabela antes de fazer a busca.
+        model.setRowCount(0);
+        
+        // Cria o DAO e faz a busca.
+        PatientDAO pdao = new PatientDAO();
+        ArrayList<Patient> plist = new ArrayList<>();
+        try {
+            plist = pdao.buscar(jtxtBusca.getText());
+        } catch (NotConnectionException ex) {
+            Logger.getLogger(PatientSearch.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PatientSearch.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        // Popula a tabela
+        for (Patient patient : plist) {
+            System.out.println(patient.getNome());
+            model.addRow(new Object[]{patient.getNome(), patient.getCpf()});
+        }
+    }//GEN-LAST:event_jbtnBuscarActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // Seta o botão padrão do fom
+        this.getRootPane().setDefaultButton(jbtnBuscar);
+    }//GEN-LAST:event_formWindowOpened
 
     // Retorna o paciente selecionado quando o for chamado pela tela
     // de cadastro de coleta

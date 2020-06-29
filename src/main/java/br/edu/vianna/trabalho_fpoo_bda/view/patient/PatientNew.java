@@ -17,6 +17,7 @@ import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractButton;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -201,25 +202,19 @@ public class PatientNew extends javax.swing.JDialog {
         String nome = jtxtNome.getText();
         System.out.println(nascimento);
         
-        User uToSave = new User(
-                "",
-                cpf,
-                new Usertype(4, "Paciente"),
-                nome,
-                ""
-        );
         Patient pToSave = new Patient(
                 cpf,
                 risco,
-                nascimento
+                nascimento,
+                nome
         );
         
         PatientDAO pdao = new PatientDAO();
-        UserDAO udao = new UserDAO();
         
         try {
             pdao.inserir(pToSave);
-            udao.inserir(uToSave);
+            JOptionPane.showMessageDialog(null, "Paciente salvo com sucesso!");
+            this.dispose();
         } catch (NotConnectionException ex) {
             Logger.getLogger(PatientNew.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -228,7 +223,7 @@ public class PatientNew extends javax.swing.JDialog {
     }//GEN-LAST:event_jbtnSalvarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        jftxtCPF.setText("09504553699");
+//        jftxtCPF.setText("09504553699");
     }//GEN-LAST:event_formWindowOpened
 
     /**

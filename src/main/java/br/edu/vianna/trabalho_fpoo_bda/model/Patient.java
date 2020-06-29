@@ -11,17 +11,28 @@ import java.util.Date;
  *
  * @author breno
  */
-public class Patient extends User {
+public class Patient {
+    private String cpf;
     private boolean risco;
     private Date dataNascimento;
-
-    public Patient(String cpf, boolean risco, Date dataNascimento) {
-        this.setCpf(cpf);
-        this.risco = risco;
-        this.dataNascimento = dataNascimento;
-    }
+    private String nome;
 
     public Patient() {
+    }
+
+    public Patient(String cpf, boolean risco, Date dataNascimento, String nome) {
+        this.cpf = cpf;
+        this.risco = risco;
+        this.dataNascimento = dataNascimento;
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public boolean isRisco() {
@@ -39,6 +50,14 @@ public class Patient extends User {
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
-    
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     
 }
