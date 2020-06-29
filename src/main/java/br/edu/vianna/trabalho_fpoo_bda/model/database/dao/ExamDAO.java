@@ -18,29 +18,28 @@ import java.sql.SQLException;
  *
  * @author natha
  */
-public class ExamDAO implements IGenericsDAO<Exam, Integer>{
+public class ExamDAO implements IGenericsDAO<Exam, Integer> {
 
     @Override
     public void inserir(Exam obj) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
-        
+
         String sql = "INSERT INTO Exame ( idTeste, idResultadoExame, idPaciente, idColeta)"
                 + "Values(?,?,?,?)";
-        
+
         PreparedStatement st = c.prepareStatement(sql);
-        
+
         st.setInt(1, obj.getTeste().getId());
         st.setInt(2, obj.getResultadoExame().getIdResultadoExame());
         st.setInt(3, obj.getCollect().getIdColeta());
-        
+
         st.executeUpdate();
     }
 
     @Override
     public void alterar(Exam obj) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
-        
-        
+
         String sql = "UPDATE Exame "
                 + "SET  "
                 + "idTeste = ?  "
@@ -48,55 +47,64 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer>{
                 + "idPaciente = ?  "
                 + "idColeta = ?  "
                 + "WHERE id = ?";
-        
+
         PreparedStatement st = c.prepareStatement(sql);
-        
+
         st.setInt(1, obj.getTeste().getId());
         st.setInt(2, obj.getResultadoExame().getIdResultadoExame());
         st.setInt(3, obj.getCollect().getIdColeta());
         st.setInt(4, obj.getIdExame());
-        
+
         st.executeUpdate();
     }
 
     @Override
     public void apagar(Exam obj) throws NotConnectionException, SQLException {
-         Connection c = ConnectionSingleton.getConnection();
-         
-          String sql = "DELETE FROM Exame "
+        Connection c = ConnectionSingleton.getConnection();
+
+        String sql = "DELETE FROM Exame "
                 + "WHERE id = ?";
-          
-          PreparedStatement st = c.prepareStatement(sql);
-          
-          st.setInt(1, obj.getIdExame());
-          
-          st.executeUpdate();
+
+        PreparedStatement st = c.prepareStatement(sql);
+
+        st.setInt(1, obj.getIdExame());
+
+        st.executeUpdate();
     }
 
     @Override
     public Exam buscarPeloId(Integer key) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
-        
-         String sql = "SELECT * FROM Exame as ex "
+
+        String sql = "SELECT * FROM Exame as ex "
                 + "WHERE ex.id = ?";
-         
-         PreparedStatement st = c.prepareStatement(sql);
-         
-         st.setInt(1, key);
-         
-         ResultSet rs = st.executeQuery();
-         
+
+        PreparedStatement st = c.prepareStatement(sql);
+
+        st.setInt(1, key);
+
+        ResultSet rs = st.executeQuery();
+
         Exam ex = null;
-        if(rs.next()){
+        if (rs.next()) {
 
         }
-        
+
         return ex;
     }
 
     @Override
     public int quantidade() throws NotConnectionException, SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection c = ConnectionSingleton.getConnection();
+
+        String sql = "SELECT count(*) FROM Exam ex";
+
+        PreparedStatement st = c.prepareStatement(sql);
+
+        ResultSet rs = st.executeQuery();
+        rs.next();
+
+        return rs.getInt(1);
     }
-    
+
 }

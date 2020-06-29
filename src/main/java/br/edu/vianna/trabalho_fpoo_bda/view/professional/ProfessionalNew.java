@@ -50,6 +50,11 @@ public class ProfessionalNew extends javax.swing.JDialog {
         jlblTipo.setText("Tipo");
 
         jbtnSalvar.setText("Salvar");
+        jbtnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnSalvarActionPerformed(evt);
+            }
+        });
 
         jbtnCancelar.setText("Cancelar");
         jbtnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -116,6 +121,13 @@ public class ProfessionalNew extends javax.swing.JDialog {
     private void jbtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_jbtnCancelarActionPerformed
+
+    private void jbtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSalvarActionPerformed
+        // TODO add your handling code here:
+        
+         System.out.println("Nome: " + jtxtNome.getText());
+        
+    }//GEN-LAST:event_jbtnSalvarActionPerformed
 
     /**
      * @param args the command line arguments

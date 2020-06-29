@@ -105,8 +105,8 @@ public class ReportDAO implements IGenericsDAO<Report, Integer> {
 
         String sql = "SELECT  count(*)  FROM Relatorio as re\n"
                 + "INNER JOIN Paciente p ON (re.idPaciente = p.cpf) "
-                + "INNER JOIN Exame ex ON (re.idExame = ex.id) "
-                + "WHERE re.id = ?";
+                + "INNER JOIN Exame ex ON (re.idExame = ex.id) ";
+             
 
         PreparedStatement st = c.prepareStatement(sql);
 
