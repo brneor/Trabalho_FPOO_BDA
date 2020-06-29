@@ -87,8 +87,13 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer>{
          
          ResultSet rs = st.executeQuery();
          
-        return null;
+        Exam ex = null;
+        if(rs.next()){
+            
+            
+        }
         
+        return ex;
     }
 
     @Override
