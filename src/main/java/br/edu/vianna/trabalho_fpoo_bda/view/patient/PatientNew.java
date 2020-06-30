@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
  * @author breno
  */
 public class PatientNew extends javax.swing.JDialog {
+
     private Patient paciente = new Patient();
 
     /**
@@ -198,7 +199,7 @@ public class PatientNew extends javax.swing.JDialog {
             }
         }
         System.out.println("Grupo de risco? " + (jchkRisco.isSelected() == true ? "Sim" : "Não"));
-        
+
         // Faz o parse do valor informado para os formatos de data corretos.
         Date dNascimento = new Date();
         try {
@@ -206,21 +207,28 @@ public class PatientNew extends javax.swing.JDialog {
         } catch (ParseException ex) {
             Logger.getLogger(PatientNew.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         paciente.setCpf(jftxtCPF.getText().replaceAll("\\.|\\-", ""));
         paciente.setRisco(jchkRisco.isSelected());
         paciente.setNome(jtxtNome.getText());
         paciente.setDataNascimento(dNascimento);
-        
-        try {
-            new PatientDAO().inserir(paciente);
-            JOptionPane.showMessageDialog(null, "Paciente salvo com sucesso!");
-            this.dispose();
-        } catch (NotConnectionException ex) {
-            Logger.getLogger(PatientNew.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(PatientNew.class.getName()).log(Level.SEVERE, null, ex);
+
+        if (paciente.getCpf().matches("[0-9]*") && paciente.getNome().matches("[a-z-A-Z]")) {
+            /*try {
+                new PatientDAO().inserir(paciente);
+                JOptionPane.showMessageDialog(null, "Paciente salvo com sucesso!");
+                this.dispose();
+            } catch (NotConnectionException ex) {
+                Logger.getLogger(PatientNew.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(PatientNew.class.getName()).log(Level.SEVERE, null, ex);
+            }*/
+            
+            System.out.println(paciente.getCpf());
+            System.out.println(paciente.getNome());
+
         }
+
     }//GEN-LAST:event_jbtnSalvarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
