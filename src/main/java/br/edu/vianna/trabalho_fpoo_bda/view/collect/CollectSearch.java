@@ -5,11 +5,24 @@
  */
 package br.edu.vianna.trabalho_fpoo_bda.view.collect;
 
+import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
+import br.edu.vianna.trabalho_fpoo_bda.model.Collect;
+import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.CollectDAO;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author breno
  */
 public class CollectSearch extends javax.swing.JDialog {
+    private Boolean insert = false;
+    private Collect rColeta = new Collect();
 
     /**
      * Creates new form CollectSearch
@@ -38,8 +51,18 @@ public class CollectSearch extends javax.swing.JDialog {
         setTitle("Busca coleta");
         setResizable(false);
         setSize(new java.awt.Dimension(300, 290));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jbtnAction.setText("Editar");
+        jbtnAction.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnActionActionPerformed(evt);
+            }
+        });
 
         jtblResultado.setAutoCreateRowSorter(true);
         jtblResultado.setModel(new javax.swing.table.DefaultTableModel(
@@ -47,7 +70,7 @@ public class CollectSearch extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Identificação", "Coletor", "Paciente", "Data", "Hora"
+                "Coleta nº", "Profissional", "Paciente", "Data", "Hora"
             }
         ) {
             Class[] types = new Class [] {
@@ -65,10 +88,16 @@ public class CollectSearch extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        jtblResultado.getTableHeader().setReorderingAllowed(false);
+        jtblResultado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jtblResultadoMousePressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtblResultado);
         if (jtblResultado.getColumnModel().getColumnCount() > 0) {
             jtblResultado.getColumnModel().getColumn(0).setResizable(false);
-            jtblResultado.getColumnModel().getColumn(0).setPreferredWidth(50);
+            jtblResultado.getColumnModel().getColumn(0).setPreferredWidth(25);
             jtblResultado.getColumnModel().getColumn(3).setResizable(false);
             jtblResultado.getColumnModel().getColumn(3).setPreferredWidth(45);
             jtblResultado.getColumnModel().getColumn(4).setResizable(false);
@@ -76,6 +105,11 @@ public class CollectSearch extends javax.swing.JDialog {
         }
 
         jbtnBuscar.setText("Buscar");
+        jbtnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -110,13 +144,86 @@ public class CollectSearch extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jbtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBuscarActionPerformed
+        // Cria o model pra manipular a tabela
+        DefaultTableModel model = (DefaultTableModel) jtblResultado.getModel();
+        
+        // Limpa a tabela antes de fazer a busca.
+        model.setRowCount(0);
+        
+        // Cria o DAO e faz a busca.
+        CollectDAO cdao = new CollectDAO();
+        ArrayList<Collect> clist = new ArrayList<>();
+        try {
+            clist = cdao.buscarPorPaciente(jtxtBusca.getText());
+        } catch (NotConnectionException ex) {
+            Logger.getLogger(CollectSearch.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(CollectSearch.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CollectSearch.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        // Popula a tabela
+        for (Collect collect : clist) {
+            // Tem que formatar a data/hora para exibir
+            SimpleDateFormat sdfShort = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
+            
+            // Adiciona o resultado à tabela.
+            model.addRow(new Object[] {
+                collect.getIdColeta(), 
+                collect.getProfissional().getNome(),
+                collect.getPaciente().getNome(),
+                sdfShort.format(collect.getDataColeta()),
+                sdfTime.format(collect.getHoraColeta())
+            });
+        }
+    }//GEN-LAST:event_jbtnBuscarActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // Seta o botão padrão do fom
+        this.getRootPane().setDefaultButton(jbtnBuscar);
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jbtnActionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActionActionPerformed
+        // A ação depende de que tela invocou. Se foi do menu "Paciente"
+        // oferece para editar. Se veio da criação de coleta, retorna 
+        // o paciente selecionado na lista.
+        if (insert && jtblResultado.getSelectedRow() != -1) {
+            returnCollect(Integer.parseInt(jtblResultado.getValueAt(jtblResultado.getSelectedRow(), 1).toString()));
+        }
+    }//GEN-LAST:event_jbtnActionActionPerformed
+
+    private void jtblResultadoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblResultadoMousePressed
+        if (evt.getClickCount() == 2 && jtblResultado.getSelectedRow() != -1) {
+            // Abre o paciente pra edição ou retorna o paciente dependendo do caller
+            if (insert) {
+                returnCollect(Integer.parseInt(jtblResultado.getValueAt(jtblResultado.getSelectedRow(), 0).toString()));
+            }
+        }
+    }//GEN-LAST:event_jtblResultadoMousePressed
     
     // Retorna o paciente selecionado quando o for chamado pela tela
     // de cadastro de coleta
-    public String getCollect() {
+    public Collect getCollect() {
+        this.insert = true;
         this.jbtnAction.setText("Inserir");
         this.setVisible(true);
-        return "it works";
+        return rColeta;
+    }
+    
+    private void returnCollect(int id) {
+        try {
+            this.rColeta = new CollectDAO().buscarPeloId(id);
+        } catch (NotConnectionException ex) {
+            Logger.getLogger(CollectSearch.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(CollectSearch.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        this.dispose();
     }
     /**
      * @param args the command line arguments

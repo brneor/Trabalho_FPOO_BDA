@@ -5,6 +5,17 @@
  */
 package br.edu.vianna.trabalho_fpoo_bda.view.exam;
 
+import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
+import br.edu.vianna.trabalho_fpoo_bda.model.Exam;
+import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.ExamDAO;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author breno
@@ -29,7 +40,7 @@ public class ExamSearch extends javax.swing.JDialog {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtblResultado = new javax.swing.JTable();
         jtxtBusca = new javax.swing.JTextField();
         jbtnBuscar = new javax.swing.JButton();
         jbtnAction = new javax.swing.JButton();
@@ -37,12 +48,12 @@ public class ExamSearch extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Busca exame");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtblResultado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Identificação", "Teste", "Paciente"
+                "Exame nº", "Teste nº", "Paciente"
             }
         ) {
             Class[] types = new Class [] {
@@ -60,16 +71,22 @@ public class ExamSearch extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(50);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(50);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(150);
+        jtblResultado.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jtblResultado);
+        if (jtblResultado.getColumnModel().getColumnCount() > 0) {
+            jtblResultado.getColumnModel().getColumn(0).setResizable(false);
+            jtblResultado.getColumnModel().getColumn(0).setPreferredWidth(25);
+            jtblResultado.getColumnModel().getColumn(1).setResizable(false);
+            jtblResultado.getColumnModel().getColumn(1).setPreferredWidth(50);
+            jtblResultado.getColumnModel().getColumn(2).setPreferredWidth(150);
         }
 
         jbtnBuscar.setText("Buscar");
+        jbtnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnBuscarActionPerformed(evt);
+            }
+        });
 
         jbtnAction.setText("Visualizar");
 
@@ -106,6 +123,37 @@ public class ExamSearch extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jbtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBuscarActionPerformed
+        // Cria o model pra manipular a tabela
+        DefaultTableModel model = (DefaultTableModel) jtblResultado.getModel();
+
+        // Limpa a tabela antes de fazer a busca.
+        model.setRowCount(0);
+
+        // Cria o DAO e faz a busca.
+        ExamDAO edao = new ExamDAO();
+        ArrayList<Exam> clist = new ArrayList<>();
+        try {
+            clist = edao.buscarPorPaciente(jtxtBusca.getText());
+        } catch (NotConnectionException ex) {
+            Logger.getLogger(ExamSearch.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ExamSearch.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(ExamSearch.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        // Popula a tabela
+        for (Exam exam : clist) {
+            // Adiciona o resultado à tabela.
+            model.addRow(new Object[] {
+                exam.getIdExame(), 
+                exam.getCollect().getIdColeta(),
+                exam.getPaciente().getNome()
+            });
+        }
+    }//GEN-LAST:event_jbtnBuscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -151,9 +199,9 @@ public class ExamSearch extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton jbtnAction;
     private javax.swing.JButton jbtnBuscar;
+    private javax.swing.JTable jtblResultado;
     private javax.swing.JTextField jtxtBusca;
     // End of variables declaration//GEN-END:variables
 }

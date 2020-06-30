@@ -5,16 +5,32 @@
  */
 package br.edu.vianna.trabalho_fpoo_bda.view.exam;
 
+import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
+import br.edu.vianna.trabalho_fpoo_bda.model.Collect;
+import br.edu.vianna.trabalho_fpoo_bda.model.Exam;
+import br.edu.vianna.trabalho_fpoo_bda.model.ExamResult;
+import br.edu.vianna.trabalho_fpoo_bda.model.Test;
+import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.ExamDAO;
+import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.ExamResultDAO;
 import br.edu.vianna.trabalho_fpoo_bda.view.collect.CollectSearch;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author breno
  */
 public class ExamNew extends javax.swing.JDialog {
-
     private Boolean refazer = false;
+    private Collect coleta = new Collect();
+    private Exam exame = new Exam();
+    private ExamResult resultado = new ExamResult();
+    private Test teste = new Test();
+    
     /**
      * Creates new form ExamNew
      */
@@ -57,7 +73,14 @@ public class ExamNew extends javax.swing.JDialog {
 
         jlblResultado.setText("Resultado");
 
+        jcmbResultado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+
         jbtnSalvar.setText("Salvar");
+        jbtnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnSalvarActionPerformed(evt);
+            }
+        });
 
         jbtnRefazer.setText("Refazer");
         jbtnRefazer.addActionListener(new java.awt.event.ActionListener() {
@@ -136,8 +159,11 @@ public class ExamNew extends javax.swing.JDialog {
     private void jbtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBuscarActionPerformed
         CollectSearch csearch = new CollectSearch((JFrame)this.getParent(), true);
         csearch.setLocationRelativeTo(this);
-        String retorno = csearch.getCollect();
-        System.out.println(retorno);
+        coleta = csearch.getCollect();
+        
+        System.out.println("id da coleta: " + coleta.getIdColeta());
+        jtxtColeta.setText(String.valueOf(coleta.getIdColeta()));
+        
     }//GEN-LAST:event_jbtnBuscarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -145,7 +171,43 @@ public class ExamNew extends javax.swing.JDialog {
         if (!refazer) {
             jbtnRefazer.setVisible(false);
         }
+        
+        ArrayList<ExamResult> resultados = new ArrayList<>();
+        try {
+            resultados = new ExamResultDAO().listar();
+        } catch (NotConnectionException ex) {
+            Logger.getLogger(ExamNew.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ExamNew.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        for (ExamResult r : resultados) {
+            jcmbResultado.addItem(r.getDescricao());
+        }
     }//GEN-LAST:event_formWindowOpened
+
+    private void jbtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSalvarActionPerformed
+        resultado.setIdResultadoExame(jcmbResultado.getSelectedIndex());
+        resultado.setDescricao(jcmbResultado.getSelectedItem().toString());
+        
+        teste.setId(Integer.parseInt(jtxtTeste.getText()));
+        teste.setExame(exame);
+        
+        exame.setPaciente(coleta.getPaciente());
+        exame.setTeste(teste);
+        exame.setResultadoExame(resultado);
+        exame.setCollect(coleta);
+        
+        try {
+            new ExamDAO().inserir(exame);
+            JOptionPane.showMessageDialog(null, "Exame salvo com sucesso!");
+            this.dispose();
+        } catch (NotConnectionException ex) {
+            Logger.getLogger(ExamNew.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ExamNew.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jbtnSalvarActionPerformed
 
     public void refazerExam() {
         this.refazer = true;

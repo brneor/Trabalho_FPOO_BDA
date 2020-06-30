@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -249,6 +250,7 @@ public class CollectNew extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     private void jbtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSalvarActionPerformed
+        // Faz o parse do valor informado para os formatos de data/hora corretos.
         Date dColeta = new Date();
         Date hColeta = new Date();
         
@@ -277,6 +279,8 @@ public class CollectNew extends javax.swing.JDialog {
         
         try {
             new CollectDAO().inserir(coleta);
+            JOptionPane.showMessageDialog(null, "Coleta salva com sucesso!");
+            this.dispose();
         } catch (NotConnectionException ex) {
             Logger.getLogger(CollectNew.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {

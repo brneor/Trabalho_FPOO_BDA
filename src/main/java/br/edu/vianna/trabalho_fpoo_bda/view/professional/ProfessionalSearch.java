@@ -86,6 +86,7 @@ public class ProfessionalSearch extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        jtblResultado.getTableHeader().setReorderingAllowed(false);
         jtblResultado.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jtblResultadoMousePressed(evt);

@@ -16,6 +16,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -83,36 +88,157 @@ public class CollectDAO implements IGenericsDAO<Collect, Integer> {
     @Override
     public Collect buscarPeloId(Integer key) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
-
-        String sql = "SELECT * FROM Coleta c\n"
-                + "INNER JOIN Paciente p ON (c.idPaciente = p.cpf) "
-                + "INNER JOIN  ProfissionalSaude prf ON (c.idProfissionalSaude = prf.idProfissionalSaude) "
-                + "INNER JOIN   Material m ON (c.idMaterial = m.id) "
-                + "WHERE c.id = ?";
-
+        
+        String sql = "SELECT "
+            + " c.id, "
+            + " c.idPaciente, "
+            + " c.idProfissionalSaude, "
+            + " c.idMaterial, "
+            + " c.exameRealizado, "
+            + " c.dataColeta, "
+            + " c.horaColeta, "
+            + " c.cidade, "
+            + " p.nome as nomePaciente, "
+            + " p.dataNascimento, "
+            + " p.risco as pacienteRisco, "
+            + " ps.idTipoProfissional, "
+            + " ps.nome as nomeProfissional, "
+            + " tp.descricao as tipoProfissional, "
+            + " m.descricao as material "
+            + "FROM Coleta as c "
+            + "INNER JOIN Paciente p ON c.idPaciente = p.cpf "
+            + "INNER JOIN ProfissionalSaude ps ON c.idProfissionalSaude = ps.id "
+            + "INNER JOIN tipoProfissional as tp on ps.idTipoProfissional = tp.id "
+            + "INNER JOIN Material m ON c.idMaterial = m.id "
+            + "WHERE c.id = ?"; 
+        
         PreparedStatement st = c.prepareStatement(sql);
-
+        
         st.setInt(1, key);
-
+        
         ResultSet rs = st.executeQuery();
-
-        Collect co = null;
+        
+        Collect coleta = new Collect();
+        
         if (rs.next()) {
-            co = new Collect(rs.getInt("id"),
-                    new Patient(rs.getString("cpf"), rs.getBoolean("risco"), rs.getDate("dataNascimento"), rs.getString("nome")),
-                    new Professional(rs.getInt("id"), new ProfessionalType(rs.getInt("id"), rs.getString("descricao")), rs.getString("nome")),
-                    new Material(rs.getInt("id"), rs.getString("descricao")),
-                    rs.getBoolean("exameRealizado"),
-                    rs.getString("cidade"),
-                    rs.getDate("dataColeta"),
-                    rs.getDate("horaColeta"));
-
-            return co;
-        } else {
-            return co;
+            SimpleDateFormat sdfShort = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
+            
+            Patient p = new Patient();
+            p.setCpf(rs.getString("idPaciente"));
+            try {
+                p.setDataNascimento(sdfShort.parse(rs.getString("dataNascimento")));
+            } catch (ParseException ex) {
+                Logger.getLogger(CollectDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            p.setNome(rs.getString("nomePaciente"));
+            p.setRisco(rs.getInt("pacienteRisco") == 1);
+            
+            ProfessionalType tipo = new ProfessionalType();
+            tipo.setIdTipoProfissional(rs.getInt("idTipoProfissional"));
+            tipo.setDescricao(rs.getString("tipoProfissional"));
+            
+            Professional pf = new Professional();
+            pf.setId(rs.getInt("idProfissionalSaude"));
+            pf.setNome(rs.getString("nomeProfissional"));
+            pf.setTipo(tipo);
+            
+            Material m = new Material();
+            m.setIdMaterial(rs.getInt("idMaterial"));
+            m.setDescricao("material");
+            
+            coleta.setIdColeta(rs.getInt("id"));
+            coleta.setPaciente(p);
+            coleta.setProfissional(pf);
+            coleta.setMaterial(m);
+            try {
+                coleta.setDataColeta(sdfShort.parse(rs.getString("dataColeta")));
+            } catch (ParseException ex) {
+                Logger.getLogger(CollectDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                coleta.setHoraColeta(sdfTime.parse(rs.getString("horaColeta")));
+            } catch (ParseException ex) {
+                Logger.getLogger(CollectDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            coleta.setCidade(rs.getString("cidade"));
+            
         }
-
-        //return new Collect();
+        
+        return coleta;
+    }
+    
+    public ArrayList<Collect> buscarPorPaciente(String nome) throws NotConnectionException, SQLException, ParseException {
+        Connection c = ConnectionSingleton.getConnection();
+        
+        String sql = "SELECT "
+            + " c.id, "
+            + " c.idPaciente, "
+            + " c.idProfissionalSaude, "
+            + " c.idMaterial, "
+            + " c.exameRealizado, "
+            + " c.dataColeta, "
+            + " c.horaColeta, "
+            + " c.cidade, "
+            + " p.nome as nomePaciente, "
+            + " p.dataNascimento, "
+            + " p.risco as pacienteRisco, "
+            + " ps.idTipoProfissional, "
+            + " ps.nome as nomeProfissional, "
+            + " tp.descricao as tipoProfissional, "
+            + " m.descricao as material "
+            + "FROM Coleta as c "
+            + "INNER JOIN Paciente p ON c.idPaciente = p.cpf "
+            + "INNER JOIN ProfissionalSaude ps ON c.idProfissionalSaude = ps.id "
+            + "INNER JOIN tipoProfissional as tp on ps.idTipoProfissional = tp.id "
+            + "INNER JOIN Material m ON c.idMaterial = m.id "
+            + "WHERE p.nome like ? order by p.nome"; 
+        
+        PreparedStatement st = c.prepareStatement(sql);
+        
+        st.setString(1, "%" + nome + "%");
+        
+        ResultSet rs = st.executeQuery();
+        
+        ArrayList<Collect> coletas = new ArrayList<>();
+        
+        while (rs.next()) {
+            SimpleDateFormat sdfShort = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
+            
+            Patient p = new Patient();
+            p.setCpf(rs.getString("idPaciente"));
+            p.setDataNascimento(sdfShort.parse(rs.getString("dataNascimento")));
+            p.setNome(rs.getString("nomePaciente"));
+            p.setRisco(rs.getInt("pacienteRisco") == 1);
+            
+            ProfessionalType tipo = new ProfessionalType();
+            tipo.setIdTipoProfissional(rs.getInt("idTipoProfissional"));
+            tipo.setDescricao(rs.getString("tipoProfissional"));
+            
+            Professional pf = new Professional();
+            pf.setId(rs.getInt("idProfissionalSaude"));
+            pf.setNome(rs.getString("nomeProfissional"));
+            pf.setTipo(tipo);
+            
+            Material m = new Material();
+            m.setIdMaterial(rs.getInt("idMaterial"));
+            m.setDescricao("material");
+            
+            Collect cl = new Collect();
+            cl.setIdColeta(rs.getInt("id"));
+            cl.setPaciente(p);
+            cl.setProfissional(pf);
+            cl.setMaterial(m);
+            cl.setDataColeta(sdfShort.parse(rs.getString("dataColeta")));
+            cl.setHoraColeta(sdfTime.parse(rs.getString("horaColeta")));
+            cl.setCidade(rs.getString("cidade"));
+            
+            coletas.add(cl);
+            
+        }
+        
+        return coletas;
     }
 
     @Override

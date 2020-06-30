@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -79,6 +80,30 @@ public class ExamResultDAO implements IGenericsDAO<ExamResult, Integer> {
         } else {
             return ex;
         }
+    }
+    
+    public ArrayList<ExamResult> listar() throws NotConnectionException, SQLException {
+        Connection c = ConnectionSingleton.getConnection();
+
+        // Lista todos os resultados de exame
+        String sql = "SELECT * FROM ResultadoExame";
+
+        PreparedStatement st = c.prepareStatement(sql);
+
+        ResultSet rs = st.executeQuery();
+
+        ArrayList<ExamResult> resultados = new ArrayList<>();
+
+        while (rs.next()) {
+            ExamResult e = new ExamResult();
+
+            e.setIdResultadoExame(rs.getInt("id"));
+            e.setDescricao(rs.getString("descricao"));
+
+            resultados.add(e);
+        }
+
+        return resultados;
     }
 
     @Override

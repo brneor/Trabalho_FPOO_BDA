@@ -9,6 +9,8 @@ import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
 import br.edu.vianna.trabalho_fpoo_bda.model.Patient;
 import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.PatientDAO;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.logging.Level;
@@ -21,6 +23,7 @@ import javax.swing.JOptionPane;
  * @author breno
  */
 public class PatientNew extends javax.swing.JDialog {
+    private Patient paciente = new Patient();
 
     /**
      * Creates new form PatientNew
@@ -196,23 +199,21 @@ public class PatientNew extends javax.swing.JDialog {
         }
         System.out.println("Grupo de risco? " + (jchkRisco.isSelected() == true ? "Sim" : "Não"));
         
-        String cpf = jftxtCPF.getText().replaceAll("\\.|\\-", "");
-        Boolean risco = jchkRisco.isSelected();
-        Date nascimento = new Date(jftxtNascimento.getText());
-        String nome = jtxtNome.getText();
-        System.out.println(nascimento);
+        // Faz o parse do valor informado para os formatos de data corretos.
+        Date dNascimento = new Date();
+        try {
+            dNascimento = new SimpleDateFormat("dd/MM/yyyy").parse(jftxtNascimento.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(PatientNew.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        Patient pToSave = new Patient(
-                cpf,
-                risco,
-                nascimento,
-                nome
-        );
-        
-        PatientDAO pdao = new PatientDAO();
+        paciente.setCpf(jftxtCPF.getText().replaceAll("\\.|\\-", ""));
+        paciente.setRisco(jchkRisco.isSelected());
+        paciente.setNome(jtxtNome.getText());
+        paciente.setDataNascimento(dNascimento);
         
         try {
-            pdao.inserir(pToSave);
+            new PatientDAO().inserir(paciente);
             JOptionPane.showMessageDialog(null, "Paciente salvo com sucesso!");
             this.dispose();
         } catch (NotConnectionException ex) {
