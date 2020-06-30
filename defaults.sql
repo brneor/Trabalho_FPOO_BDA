@@ -1,3 +1,4 @@
+delete from Material;
 insert into Material
 values 
 	(1, "Aspirado traqueal"),

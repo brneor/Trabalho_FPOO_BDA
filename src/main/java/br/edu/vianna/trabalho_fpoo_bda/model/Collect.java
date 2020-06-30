@@ -16,7 +16,7 @@ public class Collect {
     private Patient paciente;
     private Professional profissional; 
     private Material material;
-    private boolean realizado;
+    private boolean exameRealizado;
     private String cidade;
     private Date data, hora;    
 
@@ -28,7 +28,7 @@ public class Collect {
         this.paciente = paciente;
         this.profissional = profissional;
         this.material = material;
-        this.realizado = realizado;
+        this.exameRealizado = realizado;
         this.cidade = cidade;
         this.data = dataColeta;
         this.hora = horaColeta;
@@ -66,12 +66,12 @@ public class Collect {
         this.material = material;
     }
 
-    public boolean isRealizado() {
-        return realizado;
+    public boolean isExameRealizado() {
+        return exameRealizado;
     }
 
-    public void setRealizado(boolean realizado) {
-        this.realizado = realizado;
+    public void setExameRealizado(boolean exameRealizado) {
+        this.exameRealizado = exameRealizado;
     }
 
     public String getCidade() {

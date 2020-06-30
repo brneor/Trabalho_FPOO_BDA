@@ -21,8 +21,8 @@ import javax.swing.JOptionPane;
  * @author breno
  */
 public class ProfessionalNew extends javax.swing.JDialog {
-    ProfessionalType tipo = new ProfessionalType();
-    Professional profissional = new Professional();
+    private ProfessionalType tipo = new ProfessionalType();
+    private Professional profissional = new Professional();
 
     /**
      * Creates new form ProfessionalSearch
@@ -52,7 +52,6 @@ public class ProfessionalNew extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(null);
-        setPreferredSize(new java.awt.Dimension(300, 190));
         setResizable(false);
         setSize(new java.awt.Dimension(300, 190));
         addWindowListener(new java.awt.event.WindowAdapter() {

@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -87,6 +88,31 @@ public class MaterialDAO implements IGenericsDAO<Material, Integer> {
             return m;
         }
 
+    }
+    
+    public ArrayList<Material> listar() throws NotConnectionException, SQLException {
+        Connection c = ConnectionSingleton.getConnection();
+        
+
+        // Lista todos os materiais
+        String sql = "SELECT * FROM Material";
+
+        PreparedStatement st = c.prepareStatement(sql);
+
+        ResultSet rs = st.executeQuery();
+
+        ArrayList<Material> materiais = new ArrayList<>();
+
+        while (rs.next()) {
+            Material m = new Material();
+
+            m.setIdMaterial(rs.getInt("id"));
+            m.setDescricao(rs.getString("descricao"));
+
+            materiais.add(m);
+        }
+
+        return materiais;
     }
 
     @Override

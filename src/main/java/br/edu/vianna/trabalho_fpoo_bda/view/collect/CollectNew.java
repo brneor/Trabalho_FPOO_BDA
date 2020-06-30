@@ -5,9 +5,22 @@
  */
 package br.edu.vianna.trabalho_fpoo_bda.view.collect;
 
+import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
+import br.edu.vianna.trabalho_fpoo_bda.model.Collect;
+import br.edu.vianna.trabalho_fpoo_bda.model.Material;
 import br.edu.vianna.trabalho_fpoo_bda.model.Patient;
+import br.edu.vianna.trabalho_fpoo_bda.model.Professional;
+import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.CollectDAO;
+import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.MaterialDAO;
 import br.edu.vianna.trabalho_fpoo_bda.view.patient.PatientSearch;
 import br.edu.vianna.trabalho_fpoo_bda.view.professional.ProfessionalSearch;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -15,7 +28,10 @@ import javax.swing.JFrame;
  * @author breno
  */
 public class CollectNew extends javax.swing.JDialog {
-    Patient paciente = new Patient();
+    private Patient paciente = new Patient();
+    private Professional profissional = new Professional();
+    private Material material = new Material();
+    private Collect coleta = new Collect();
     /**
      * Creates new form CollectNew
      */
@@ -55,6 +71,11 @@ public class CollectNew extends javax.swing.JDialog {
         setPreferredSize(new java.awt.Dimension(300, 380));
         setResizable(false);
         setSize(new java.awt.Dimension(300, 380));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jlblPaciente.setText("Paciente");
 
@@ -78,7 +99,14 @@ public class CollectNew extends javax.swing.JDialog {
 
         jlblMaterial.setText("Material coletado");
 
+        jcmbMaterial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+
         jbtnSalvar.setText("Salvar");
+        jbtnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnSalvarActionPerformed(evt);
+            }
+        });
 
         jbtnCancel.setText("Cancelar");
         jbtnCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -89,9 +117,17 @@ public class CollectNew extends javax.swing.JDialog {
 
         jlblDataColeta.setText("Data");
 
-        jftxtDataColeta.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        try {
+            jftxtDataColeta.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
-        jftxtHoraColeta.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("HH:mm"))));
+        try {
+            jftxtHoraColeta.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         jlblHoraColeta.setText("Hora");
 
@@ -192,9 +228,61 @@ public class CollectNew extends javax.swing.JDialog {
     private void jbtnBuscaProfissionalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBuscaProfissionalActionPerformed
         ProfessionalSearch psearch = new ProfessionalSearch((JFrame)this.getParent(), true);
         psearch.setLocationRelativeTo(this);
-        String retorno = psearch.getProfessional();
-        System.out.println(retorno);
+        profissional = psearch.getProfessional();
+        
+        jtxtProfissional.setText(this.profissional.getNome());
     }//GEN-LAST:event_jbtnBuscaProfissionalActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        ArrayList<Material> materiais = new ArrayList<>();
+        try {
+            materiais = new MaterialDAO().listar();
+        } catch (NotConnectionException ex) {
+            Logger.getLogger(CollectNew.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(CollectNew.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        for (Material m : materiais) {
+            jcmbMaterial.addItem(m.getDescricao());
+        }
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jbtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSalvarActionPerformed
+        Date dColeta = new Date();
+        Date hColeta = new Date();
+        
+        try {
+            dColeta = new SimpleDateFormat("dd/MM/yyyy").parse(jftxtDataColeta.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(CollectNew.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            hColeta = new SimpleDateFormat("HH:mm").parse(jftxtHoraColeta.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(CollectNew.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        material.setIdMaterial(jcmbMaterial.getSelectedIndex());
+        material.setDescricao(jcmbMaterial.getSelectedItem().toString());
+        
+        coleta.setPaciente(paciente);
+        coleta.setProfissional(profissional);
+        coleta.setMaterial(material);
+        coleta.setExameRealizado(false);
+        coleta.setDataColeta(dColeta);
+        coleta.setHoraColeta(hColeta);
+        coleta.setCidade(jtxtCidade.getText());
+        
+        try {
+            new CollectDAO().inserir(coleta);
+        } catch (NotConnectionException ex) {
+            Logger.getLogger(CollectNew.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(CollectNew.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jbtnSalvarActionPerformed
 
     /**
      * @param args the command line arguments

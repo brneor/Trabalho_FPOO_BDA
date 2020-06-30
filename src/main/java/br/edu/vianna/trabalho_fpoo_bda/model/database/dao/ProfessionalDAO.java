@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -72,35 +73,59 @@ public class ProfessionalDAO implements IGenericsDAO<Professional, Integer> {
     }
 
     @Override
-    public Professional buscarPeloId(Integer key) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
-    }
-
-    public Professional buscarPeloNome(String nome) throws NotConnectionException, SQLException {
+    public Professional buscarPeloId(Integer key) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
-        //Busca Profissional e seu tipo
-        String sql = "SELECT * FROM ProfissionalSaude as p\n"
-                + "INNER JOIN tipoProfissional as tP ON (p.idTipoProfissional  = tp.id) "
-                + "WHERE p.nome = ?";
+        
+        // Busca Profissional e seu tipo
+        String sql = "SELECT p.id as idProfissional, p.idTipoProfissional, p.nome, "
+                + "tp.id as idTipo, tp.descricao FROM ProfissionalSaude as p " 
+                + "INNER JOIN tipoProfissional as tp ON p.idTipoProfissional = tp.id "
+                + "where p.id = ?";
 
         PreparedStatement st = c.prepareStatement(sql);
 
-        st.setString(1, nome);
-
-        ResultSet rs = st.executeQuery();
+        st.setInt(1, key);
         
-        //pegando valores da tabela e retornando
-        Professional p = null;
-        if (rs.next()) {
-            p = new Professional(rs.getInt("id"),
-                    //Buscando tipo do profissional
-                    new ProfessionalType(rs.getInt("id"), rs.getString("descricao")),
-                    rs.getString("nome"));
+        ResultSet rs = st.executeQuery();
 
-            return p;//retorna um profissional se tiver próxima linha
-        } else {
-            return p;//retorna vazio caso nao
+        Professional p = new Professional();
+
+        if (rs.next()) {            
+            p.setId(rs.getInt("idProfissional"));
+            p.setNome(rs.getString("nome"));
+            p.setTipo(new ProfessionalType(rs.getInt("idTipo"), rs.getString("descricao")));
         }
+
+        return p;
+    }
+
+    public ArrayList<Professional> buscar(String nome) throws NotConnectionException, SQLException {
+        Connection c = ConnectionSingleton.getConnection();
+        
+        // Busca Profissional e seu tipo
+        String sql = "SELECT p.id as idProfissional, p.idTipoProfissional, p.nome, "
+                + "tp.id as idTipo, tp.descricao FROM ProfissionalSaude as p " 
+                + "INNER JOIN tipoProfissional as tp ON p.idTipoProfissional = tp.id "
+                + "where nome like ? order by nome;";
+
+        PreparedStatement st = c.prepareStatement(sql);
+
+        st.setString(1, "%"+nome+"%");
+        
+        ResultSet rs = st.executeQuery();
+
+        ArrayList<Professional> profissionais = new ArrayList<>();
+
+        while (rs.next()) {            
+            Professional p = new Professional();
+            p.setId(rs.getInt("idProfissional"));
+            p.setNome(rs.getString("nome"));
+            p.setTipo(new ProfessionalType(rs.getInt("idTipo"), rs.getString("descricao")));
+           
+            profissionais.add(p);
+        }
+
+        return profissionais;
     }
 
     @Override

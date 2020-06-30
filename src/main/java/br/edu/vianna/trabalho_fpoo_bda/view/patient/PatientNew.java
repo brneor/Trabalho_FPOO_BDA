@@ -7,10 +7,7 @@ package br.edu.vianna.trabalho_fpoo_bda.view.patient;
 
 import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
 import br.edu.vianna.trabalho_fpoo_bda.model.Patient;
-import br.edu.vianna.trabalho_fpoo_bda.model.User;
-import br.edu.vianna.trabalho_fpoo_bda.model.Usertype;
 import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.PatientDAO;
-import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.UserDAO;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Enumeration;
@@ -59,7 +56,6 @@ public class PatientNew extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Paciente");
         setMinimumSize(new java.awt.Dimension(300, 290));
-        setPreferredSize(new java.awt.Dimension(300, 290));
         setResizable(false);
         setSize(new java.awt.Dimension(300, 290));
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -80,7 +76,11 @@ public class PatientNew extends javax.swing.JDialog {
 
         jLabel1.setText("Nascimento");
 
-        jftxtNascimento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        try {
+            jftxtNascimento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         jlblSexo.setText("Sexo");
 
