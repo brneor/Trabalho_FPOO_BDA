@@ -188,6 +188,16 @@ public class PatientNew extends javax.swing.JDialog {
     }//GEN-LAST:event_jbtnCancelarActionPerformed
 
     private void jbtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSalvarActionPerformed
+        // Checa a validade dos valores informados.
+        if (jtxtNome.getText().length() == 0 ||
+                jtxtNome.getText().matches("[0-9]") ||
+                jftxtCPF.getText().length() != 14 ||
+                jftxtNascimento.getText().length() != 10) {
+            
+                JOptionPane.showMessageDialog(null, "Informe os dados corretamente!");
+                return;
+        }
+        
         System.out.println("Nome: " + jtxtNome.getText());
         System.out.println("CPF: " + jftxtCPF.getText().replaceAll("\\.|\\-", ""));
         System.out.println("Nascimento: " + jftxtNascimento.getText());
@@ -212,21 +222,15 @@ public class PatientNew extends javax.swing.JDialog {
         paciente.setRisco(jchkRisco.isSelected());
         paciente.setNome(jtxtNome.getText());
         paciente.setDataNascimento(dNascimento);
-
-        if (paciente.getCpf().matches("[0-9]*") && paciente.getNome().matches("[a-z-A-Z]")) {
-            /*try {
-                new PatientDAO().inserir(paciente);
-                JOptionPane.showMessageDialog(null, "Paciente salvo com sucesso!");
-                this.dispose();
-            } catch (NotConnectionException ex) {
-                Logger.getLogger(PatientNew.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(PatientNew.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
             
-            System.out.println(paciente.getCpf());
-            System.out.println(paciente.getNome());
-
+        try {
+            new PatientDAO().inserir(paciente);
+            JOptionPane.showMessageDialog(null, "Paciente salvo com sucesso!");
+            this.dispose();
+        } catch (NotConnectionException ex) {
+            Logger.getLogger(PatientNew.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PatientNew.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_jbtnSalvarActionPerformed
