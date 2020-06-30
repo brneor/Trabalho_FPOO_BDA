@@ -5,11 +5,24 @@
  */
 package br.edu.vianna.trabalho_fpoo_bda.view.professional;
 
+import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
+import br.edu.vianna.trabalho_fpoo_bda.model.ProfessionalType;
+import br.edu.vianna.trabalho_fpoo_bda.model.Professional;
+import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.ProfessionalDAO;
+import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.ProfessionalTypeDAO;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author breno
  */
 public class ProfessionalNew extends javax.swing.JDialog {
+    ProfessionalType tipo = new ProfessionalType();
+    Professional profissional = new Professional();
 
     /**
      * Creates new form ProfessionalSearch
@@ -42,10 +55,17 @@ public class ProfessionalNew extends javax.swing.JDialog {
         setPreferredSize(new java.awt.Dimension(300, 190));
         setResizable(false);
         setSize(new java.awt.Dimension(300, 190));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jlblNome.setText("Nome");
 
         jlblID.setText("Identificação");
+
+        jcmbTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
 
         jlblTipo.setText("Tipo");
 
@@ -123,11 +143,43 @@ public class ProfessionalNew extends javax.swing.JDialog {
     }//GEN-LAST:event_jbtnCancelarActionPerformed
 
     private void jbtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSalvarActionPerformed
-        // TODO add your handling code here:
-        
          System.out.println("Nome: " + jtxtNome.getText());
+         System.out.println("Id: " + jtxtID.getText());
+         System.out.println("Tipo: " + jcmbTipo.getSelectedIndex() + " - " + jcmbTipo.getSelectedItem().toString());
+         
+         tipo.setIdTipoProfissional(jcmbTipo.getSelectedIndex());
+         tipo.setDescricao(jcmbTipo.getSelectedItem().toString());
+         
+         profissional.setId(Integer.parseInt(jtxtID.getText()));
+         profissional.setNome(jtxtNome.getText());
+         profissional.setTipo(tipo);
+         
+        try {
+            new ProfessionalDAO().inserir(profissional);
+            JOptionPane.showMessageDialog(null, "Profissional salvo com sucesso!");
+            this.dispose();
+        } catch (NotConnectionException ex) {
+            Logger.getLogger(ProfessionalNew.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProfessionalNew.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_jbtnSalvarActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        ArrayList<ProfessionalType> tipos = new ArrayList<>();
+        try {
+            tipos = new ProfessionalTypeDAO().listar();
+        } catch (NotConnectionException ex) {
+            Logger.getLogger(ProfessionalNew.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProfessionalNew.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for (ProfessionalType t : tipos) {
+            jcmbTipo.addItem(t.getDescricao());
+        }
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments

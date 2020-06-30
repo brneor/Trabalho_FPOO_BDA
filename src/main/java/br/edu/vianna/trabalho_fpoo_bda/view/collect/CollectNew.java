@@ -5,6 +5,7 @@
  */
 package br.edu.vianna.trabalho_fpoo_bda.view.collect;
 
+import br.edu.vianna.trabalho_fpoo_bda.model.Patient;
 import br.edu.vianna.trabalho_fpoo_bda.view.patient.PatientSearch;
 import br.edu.vianna.trabalho_fpoo_bda.view.professional.ProfessionalSearch;
 import javax.swing.JFrame;
@@ -14,7 +15,7 @@ import javax.swing.JFrame;
  * @author breno
  */
 public class CollectNew extends javax.swing.JDialog {
-
+    Patient paciente = new Patient();
     /**
      * Creates new form CollectNew
      */
@@ -179,8 +180,9 @@ public class CollectNew extends javax.swing.JDialog {
     private void jbtnBuscaPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBuscaPacienteActionPerformed
         PatientSearch psearch = new PatientSearch((JFrame)this.getParent(), true);
         psearch.setLocationRelativeTo(this);
-        String retorno = psearch.getPatient();
-        System.out.println(retorno);
+        paciente = psearch.getPatient();
+        
+        jtxtPaciente.setText(this.paciente.getNome());
     }//GEN-LAST:event_jbtnBuscaPacienteActionPerformed
 
     private void jbtnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCancelActionPerformed

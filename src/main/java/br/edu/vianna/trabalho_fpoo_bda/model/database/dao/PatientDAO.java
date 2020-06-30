@@ -77,6 +77,30 @@ public class PatientDAO implements IGenericsDAO<Patient, Integer> {
         throw new UnsupportedOperationException();
     }
     
+    public Patient buscarPeloCpf(String cpf) throws NotConnectionException, SQLException {
+        Connection c = ConnectionSingleton.getConnection();
+        
+        String sql = "SELECT * FROM Paciente p "
+                + "WHERE cpf = ?";
+        
+        PreparedStatement st = c.prepareStatement(sql);
+        
+        st.setString(1, cpf);
+        
+        ResultSet rs = st.executeQuery();
+        
+        Patient p = new Patient();
+        
+        if (rs.next()) {
+            p.setCpf(rs.getString("cpf"));
+            p.setDataNascimento(rs.getDate("dataNascimento"));
+            p.setNome(rs.getString("nome"));
+            p.setRisco(rs.getInt("risco") == 1);
+        }
+        
+        return p;
+    }
+    
     public ArrayList<Patient> buscar(String nome) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
         

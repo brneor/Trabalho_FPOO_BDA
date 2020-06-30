@@ -20,6 +20,8 @@ import javax.swing.table.DefaultTableModel;
  * @author breno
  */
 public class PatientSearch extends javax.swing.JDialog {
+    private Boolean insert = false;
+    private Patient rPatient = new Patient();
 
     /** Creates new form PatientSearch */
     public PatientSearch(java.awt.Frame parent, boolean modal) {
@@ -80,6 +82,11 @@ public class PatientSearch extends javax.swing.JDialog {
         });
         jtblResultado.setColumnSelectionAllowed(true);
         jtblResultado.getTableHeader().setReorderingAllowed(false);
+        jtblResultado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jtblResultadoMousePressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtblResultado);
         jtblResultado.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (jtblResultado.getColumnModel().getColumnCount() > 0) {
@@ -139,6 +146,9 @@ public class PatientSearch extends javax.swing.JDialog {
         // A ação depende de que tela invocou. Se foi do menu "Paciente"
         // oferece para editar. Se veio da criação de coleta, retorna 
         // o paciente selecionado na lista.
+        if (insert && jtblResultado.getSelectedRow() != -1) {
+            returnPatient(jtblResultado.getValueAt(jtblResultado.getSelectedRow(), 1).toString());
+        }
     }//GEN-LAST:event_jbtnActionActionPerformed
 
     private void jbtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBuscarActionPerformed
@@ -171,12 +181,34 @@ public class PatientSearch extends javax.swing.JDialog {
         this.getRootPane().setDefaultButton(jbtnBuscar);
     }//GEN-LAST:event_formWindowOpened
 
+    private void jtblResultadoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblResultadoMousePressed
+        if (evt.getClickCount() == 2 && jtblResultado.getSelectedRow() != -1) {
+            // Abre o paciente pra edição ou retorna o paciente dependendo do caller
+            if (insert) {
+                returnPatient(jtblResultado.getValueAt(jtblResultado.getSelectedRow(), 1).toString());
+            }
+        }
+    }//GEN-LAST:event_jtblResultadoMousePressed
+
     // Retorna o paciente selecionado quando o for chamado pela tela
     // de cadastro de coleta
-    public String getPatient() {
+    public Patient getPatient() {
+        this.insert = true;
         this.jbtnAction.setText("Inserir");
         this.setVisible(true);
-        return "it works";
+        return this.rPatient;
+    }
+    
+    private void returnPatient(String cpf) {
+        try {
+            this.rPatient = new PatientDAO().buscarPeloCpf(cpf);
+        } catch (NotConnectionException ex) {
+            Logger.getLogger(PatientSearch.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PatientSearch.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        this.dispose();
     }
     
     /**

@@ -24,7 +24,7 @@ public class ProfessionalDAO implements IGenericsDAO<Professional, Integer> {
     public void inserir(Professional obj) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "INSERT INTO ProfessionalSaude ( id, idTipoProfissional, nome)"
+        String sql = "INSERT INTO ProfissionalSaude ( id, idTipoProfissional, nome)"
                 + "Values(?,?, ?)";
 
         PreparedStatement st = c.prepareStatement(sql);
@@ -40,7 +40,7 @@ public class ProfessionalDAO implements IGenericsDAO<Professional, Integer> {
     public void alterar(Professional obj) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "UPDATE ProfessionalSaude "
+        String sql = "UPDATE ProfissionalSaude "
                 + "SET  "
                 + "id = ?  "
                 + "idTipoProfissional = ? "
@@ -76,7 +76,7 @@ public class ProfessionalDAO implements IGenericsDAO<Professional, Integer> {
         throw new UnsupportedOperationException();
     }
 
-    public Professional buscarPeloId(String key) throws NotConnectionException, SQLException {
+    public Professional buscarPeloNome(String nome) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
         //Busca Profissional e seu tipo
         String sql = "SELECT * FROM ProfissionalSaude as p\n"
@@ -85,7 +85,7 @@ public class ProfessionalDAO implements IGenericsDAO<Professional, Integer> {
 
         PreparedStatement st = c.prepareStatement(sql);
 
-        st.setString(1, key);
+        st.setString(1, nome);
 
         ResultSet rs = st.executeQuery();
         
