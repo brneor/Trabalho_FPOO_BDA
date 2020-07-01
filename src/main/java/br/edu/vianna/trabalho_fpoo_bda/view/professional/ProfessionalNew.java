@@ -143,6 +143,12 @@ public class ProfessionalNew extends javax.swing.JDialog {
     }//GEN-LAST:event_jbtnCancelarActionPerformed
 
     private void jbtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSalvarActionPerformed
+        // Checa a validade dos valores informados.
+        if(jtxtNome.getText().length() == 0 ||jtxtNome.getText().matches("[0-9]")){
+            JOptionPane.showMessageDialog(null, "Informe os dados corretamente!");
+            return;
+        }
+
         System.out.println("Nome: " + jtxtNome.getText());
         System.out.println("Id: " + jtxtID.getText());
         System.out.println("Tipo: " + jcmbTipo.getSelectedIndex() + " - " + jcmbTipo.getSelectedItem().toString());
@@ -153,21 +159,16 @@ public class ProfessionalNew extends javax.swing.JDialog {
         profissional.setId(Integer.parseInt(jtxtID.getText()));
         profissional.setNome(jtxtNome.getText());
         profissional.setTipo(tipo);
-        
-        
-        if (profissional.getNome().matches("[a-z-A-Z]")) {
-            try {
-                new ProfessionalDAO().inserir(profissional);
-                JOptionPane.showMessageDialog(null, "Profissional salvo com sucesso!");
-                this.dispose();
-            } catch (NotConnectionException ex) {
-                Logger.getLogger(ProfessionalNew.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(ProfessionalNew.class.getName()).log(Level.SEVERE, null, ex);
-            }
+
+        try {
+            new ProfessionalDAO().inserir(profissional);
+            JOptionPane.showMessageDialog(null, "Profissional salvo com sucesso!");
+            this.dispose();
+        } catch (NotConnectionException ex) {
+            Logger.getLogger(ProfessionalNew.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProfessionalNew.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
     }//GEN-LAST:event_jbtnSalvarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
