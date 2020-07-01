@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -202,9 +203,24 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer> {
     public int quantidade() throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "SELECT count(*) FROM Exam ex";
+        String sql = "SELECT count(*) FROM Exame";
 
         PreparedStatement st = c.prepareStatement(sql);
+
+        ResultSet rs = st.executeQuery();
+        rs.next();
+
+        return rs.getInt(1);
+    }
+    
+    public int quantidadePorData(Date data) throws NotConnectionException, SQLException {
+        Connection c = ConnectionSingleton.getConnection();
+
+        String sql = "SELECT count(*) FROM Exame where dataExame = ?";
+
+        PreparedStatement st = c.prepareStatement(sql);
+
+        st.setObject(1, data);
 
         ResultSet rs = st.executeQuery();
         rs.next();

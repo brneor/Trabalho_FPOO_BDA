@@ -144,7 +144,10 @@ public class ProfessionalNew extends javax.swing.JDialog {
 
     private void jbtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSalvarActionPerformed
         // Checa a validade dos valores informados.
-        if(jtxtNome.getText().length() == 0 ||jtxtNome.getText().matches("[0-9]")){
+        if(jtxtNome.getText().length() == 0 ||
+                jtxtNome.getText().matches("[0-9]") ||
+                jtxtID.getText().length() == 0 ||
+                jcmbTipo.getSelectedIndex() == 0){
             JOptionPane.showMessageDialog(null, "Informe os dados corretamente!");
             return;
         }

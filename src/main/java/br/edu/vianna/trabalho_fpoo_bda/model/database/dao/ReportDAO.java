@@ -6,20 +6,13 @@
 package br.edu.vianna.trabalho_fpoo_bda.model.database.dao;
 
 import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
-import br.edu.vianna.trabalho_fpoo_bda.model.Collect;
-import br.edu.vianna.trabalho_fpoo_bda.model.Exam;
-import br.edu.vianna.trabalho_fpoo_bda.model.ExamResult;
-import br.edu.vianna.trabalho_fpoo_bda.model.Material;
-import br.edu.vianna.trabalho_fpoo_bda.model.Patient;
-import br.edu.vianna.trabalho_fpoo_bda.model.Professional;
-import br.edu.vianna.trabalho_fpoo_bda.model.ProfessionalType;
 import br.edu.vianna.trabalho_fpoo_bda.model.Report;
-import br.edu.vianna.trabalho_fpoo_bda.model.Test;
 import br.edu.vianna.trabalho_fpoo_bda.model.database.connection.ConnectionSingleton;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 /**
  *
@@ -29,165 +22,40 @@ public class ReportDAO implements IGenericsDAO<Report, Integer> {
 
     @Override
     public void inserir(Report obj) throws NotConnectionException, SQLException {
-        Connection c = ConnectionSingleton.getConnection();
-
-        String sql = "INSERT INTO Relatorio ( idPaciente, idExame)"
-                + "Values(?,?)";
-
-        PreparedStatement st = c.prepareStatement(sql);
-
-        //Inserido id do paciente
-        st.setString(1, obj.getPaciente().getCpf());
-        //Inserido id do exame
-        st.setInt(2, obj.getExame().getId());
-
-        st.executeUpdate();
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void alterar(Report obj) throws NotConnectionException, SQLException {
-        Connection c = ConnectionSingleton.getConnection();
-
-        String sql = "UPDATE Relatorio "
-                + "SET  "
-                + "idPaciente = ?  "
-                + "idExame = ? "
-                + "WHERE id = ?";
-
-        PreparedStatement st = c.prepareStatement(sql);
-
-        //Inserido id do paciente
-        st.setString(1, obj.getPaciente().getCpf());
-        //Inserido id do exame
-        st.setInt(2, obj.getExame().getId());
-
-        st.setInt(3, obj.getId());
-
-        st.executeUpdate();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void apagar(Report obj) throws NotConnectionException, SQLException {
-
-        Connection c = ConnectionSingleton.getConnection();
-
-        String sql = "DELETE FROM Relatorio "
-                + "WHERE id = ?";
-
-        PreparedStatement st = c.prepareStatement(sql);
-        //Deleta relatorio com id passado
-
-        st.setInt(1, obj.getId());
-
-        st.executeUpdate();
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Report buscarPeloId(Integer key) throws NotConnectionException, SQLException {
-        Connection c = ConnectionSingleton.getConnection();
-
-        String sql = "select \n"
-                + "p.nome as Paciente, "
-                + "p.cpf as Cpf, "
-                + "p.dataNascimento as DataNascimento, "
-                + "prof.nome as ProfissionalSaude, "
-                + "m.descricao as Material, "
-                + "c.dataColeta as dataColeta, "
-                + "c.horaColeta as horaColeta, "
-                + "c.cidade as Cidade, "
-                + "ex.dataExame, "
-                + "res.descricao as Resultado "
-                + "FROM Relatorio as re "
-                + "INNER JOIN Paciente p ON (re.idPaciente = p.cpf) "
-                + "INNER JOIN Exame as ex ON (re.idExame = ex.id) "
-                + "INNER JOIN ResultadoExame as res ON (ex.idResultadoExame = res.id) "
-                + "INNER JOIN Teste as t ON (t.id = ex.idTeste) "
-                + "INNER JOIN Coleta as c ON (ex.idColeta = c.id) "
-                + "INNER JOIN Material as m ON (m.id =  c.idMaterial) "
-                + "INNER JOIN ProfissionalSaude as prof ON ( prof.id = c.idProfissionalSaude)";
-
-        PreparedStatement st = c.prepareStatement(sql);
-
-        st.setInt(1, key);
-
-        ResultSet rs = st.executeQuery();
-
-        Exam ex = new Exam();
-        Report rep = new Report();
-        Test test = new Test();
-        ExamResult res = new ExamResult();
-        Patient p = new Patient();
-        Collect co = new Collect();
-        Professional prof = new Professional();
-        ProfessionalType profT = new ProfessionalType();
-        Material m = new Material();
-        if (rs.next()) {
-            rep.setId(rs.getInt("id"));
-            ex.setId(rs.getInt("id"));
-            test.setId(rs.getInt("id"));
-            test.setExame(ex);
-            ex.setTeste(test);
-            res.setIdResultadoExame(rs.getInt("id"));
-            res.setDescricao(rs.getString("descricao"));
-            ex.setResultadoExame(res);
-            p.setCpf(rs.getString("cpf"));
-            p.setRisco(rs.getBoolean("risco"));
-            p.setDataNascimento(rs.getDate("dataNascimento"));
-            p.setNome(rs.getString("nome"));
-            ex.setPaciente(p);
-            prof.setId(rs.getInt("id"));
-            profT.setIdTipoProfissional(rs.getInt("id"));
-            profT.setDescricao(rs.getString("descricao"));
-            prof.setTipo(profT);
-            prof.setNome(rs.getString("nome"));
-            co.setIdColeta(rs.getInt("id"));
-            co.setPaciente(p);
-            co.setProfissional(prof);
-            co.setCidade(rs.getString("cidade"));
-            co.setDataColeta(rs.getDate("dataColeta"));
-            co.setHoraColeta(rs.getDate("horaColeta"));
-            co.setExameRealizado(rs.getBoolean("exameRealizado"));
-            m.setIdMaterial(rs.getInt("id"));
-            m.setDescricao(rs.getString("descricao"));
-            co.setMaterial(m);
-            ex.setCollect(co);
-            ex.setData(rs.getDate("dataExame"));
-            rep.setExame(ex);
-
-            return rep;
-        }
-
-        return rep;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public int quantidade() throws NotConnectionException, SQLException {
-        Connection c = ConnectionSingleton.getConnection();
-
-        String sql = "SELECT  count(*)  FROM Relatorio as re\n"
-                + "INNER JOIN Paciente p ON (re.idPaciente = p.cpf) "
-                + "INNER JOIN Exame ex ON (re.idExame = ex.id) ";
-
-        PreparedStatement st = c.prepareStatement(sql);
-
-        ResultSet rs = st.executeQuery();
-        rs.next();
-
-        return rs.getInt(1);
-
+        throw new UnsupportedOperationException();      
     }
 
     //Retorna quantidade de paciente
-    public int quantidadePacienteAtendido() throws NotConnectionException, SQLException {
+    public int quantidadePacienteAtendido(Date data) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
         String sql = "SELECT count(p.cpf) FROM Paciente as p\n"
-                + "INNER JOIN Relatorio as r on p.cpf = r.idPaciente  "
-                + "INNER JOIN Exame as ex on (ex.id = r.idExame)";
+                + "INNER JOIN Exame as ex on ex.idPaciente = p.cpf where "
+                + "ex.dataExame = ?";
 
         PreparedStatement st = c.prepareStatement(sql);
+        
+        st.setObject(1, data);
 
         ResultSet rs = st.executeQuery();
         rs.next();
@@ -196,14 +64,15 @@ public class ReportDAO implements IGenericsDAO<Report, Integer> {
     }
 
     //retorna quantidade de testes utilizados
-    public int testesUtilizados() throws NotConnectionException, SQLException {
+    public int testesUtilizados(Date data) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "SELECT count(t.id) FROM Relatorio as r\n"
-                + "INNER JOIN Exame as ex ON (ex.id = r.idExame) "
-                + "INNER JOIN Teste as t ON (t.id = ex.idTeste) ";
+        String sql = "select count(*) from Teste as t left join Exame as e "
+                + " on t.idExame = e.id where e.DataExame = ?";
 
         PreparedStatement st = c.prepareStatement(sql);
+        
+        st.setObject(1, data);
 
         ResultSet rs = st.executeQuery();
         rs.next();
@@ -212,15 +81,16 @@ public class ReportDAO implements IGenericsDAO<Report, Integer> {
     }
 
     //retorna quantidade de exames detectados
-    public int totalExameDetectado() throws NotConnectionException, SQLException {
+    public int totalExameDetectado(Date data) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "SELECT count(res.descricao) FROM Relatorio as re\n"
-                + "INNER JOIN Exame as ex ON (re.idExame =  ex.id)  "
-                + "INNER JOIN ResultadoExame as res ON  (res.id = ex.idResultadoExame)"
-                + "WHERE res.descricao LIKE '%Detectado%'";
+        String sql = "select count(*) from Exame as ex inner join ResultadoExame as res " 
+                + "on ex.idResultadoExame = res.id "
+                + "WHERE res.descricao = \"Detectado\" and ex.dataExame = ?";
 
         PreparedStatement st = c.prepareStatement(sql);
+        
+        st.setObject(1, data);
 
         ResultSet rs = st.executeQuery();
         rs.next();
@@ -229,16 +99,17 @@ public class ReportDAO implements IGenericsDAO<Report, Integer> {
     }
 
     //retorna quantidade de exame nao detectado
-    public int totalExameNaoDetectado() throws NotConnectionException, SQLException {
+    public int totalExameNaoDetectado(Date data) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "SELECT count(res.descricao) FROM Relatorio as re\n"
-                + "INNER JOIN Exame as ex ON (re.idExame =  ex.id)  "
-                + "INNER JOIN ResultadoExame as res ON  (res.id = ex.idResultadoExame)"
-                + "WHERE res.descricao LIKE '%Não detectado%";
+        String sql = "select count(*) from Exame as ex inner join ResultadoExame as res " 
+                + "on ex.idResultadoExame = res.id "
+                + "WHERE res.descricao = \"Não detectado\" and ex.dataExame = ?";
 
         PreparedStatement st = c.prepareStatement(sql);
 
+        st.setObject(1, data);
+        
         ResultSet rs = st.executeQuery();
         rs.next();
 
@@ -246,16 +117,16 @@ public class ReportDAO implements IGenericsDAO<Report, Integer> {
     }
 
     //retorna total de recoletas
-    public int totalRecoleta() throws NotConnectionException, SQLException {
+    public int totalRecoleta(Date data) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "select count(p.cpf) FROM Paciente as p\n"
-                + "INNER JOIN Relatorio as re ON (p.cpf = re.idPaciente)  "
-                + "INNER JOIN Exame as ex ON (re.idExame =  ex.id)  "
-                + "INNER JOIN ResultadoExame as res ON  (res.id = ex.idResultadoExame)  "
-                + "WHERE res.descricao LIKE '%Recoleta%'";
+        String sql = "select count(*) from Exame as ex inner join ResultadoExame as res " 
+                + "on ex.idResultadoExame = res.id "
+                + "WHERE res.descricao = \"Recoleta\" and ex.dataExame = ?";
 
         PreparedStatement st = c.prepareStatement(sql);
+
+        st.setObject(1, data);
 
         ResultSet rs = st.executeQuery();
         rs.next();
@@ -264,16 +135,16 @@ public class ReportDAO implements IGenericsDAO<Report, Integer> {
     }
 
     //retorna de exames inconclusivos
-    public int totalInconclusivo() throws NotConnectionException, SQLException {
+    public int totalInconclusivo(Date data) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "select count(p.cpf) FROM Paciente as p\n "
-                + "INNER JOIN Relatorio as re ON (p.cpf = re.idPaciente) "
-                + "INNER JOIN Exame as ex ON (re.idExame =  ex.id) "
-                + "INNER JOIN ResultadoExame as res ON  (res.id = ex.idResultadoExame) "
-                + "WHERE res.descricao LIKE '%Inconclusivo%'";
+        String sql = "select count(*) from Exame as ex inner join ResultadoExame as res " 
+                + "on ex.idResultadoExame = res.id "
+                + "WHERE res.descricao = \"Inconclusivo\" and ex.dataExame = ?";
 
         PreparedStatement st = c.prepareStatement(sql);
+
+        st.setObject(1, data);
 
         ResultSet rs = st.executeQuery();
         rs.next();
@@ -282,15 +153,16 @@ public class ReportDAO implements IGenericsDAO<Report, Integer> {
     }
 
     //retonra total de exames invalidos
-    public int totalInvalido() throws NotConnectionException, SQLException {
+    public int totalInvalido(Date data) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = " select count(res.descricao) FROM Relatorio as re\n "
-                + "INNER JOIN Exame as ex ON (re.idExame =  ex.id)  "
-                + "INNER JOIN ResultadoExame as res ON  (res.id = ex.idResultadoExame)  "
-                + "WHERE res.descricao LIKE '%Inválido%'";
+        String sql = "select count(*) from Exame as ex inner join ResultadoExame as res " 
+                + "on ex.idResultadoExame = res.id "
+                + "WHERE res.descricao = \"Inválido\" and ex.dataExame = ?";
 
         PreparedStatement st = c.prepareStatement(sql);
+        
+        st.setObject(1, data);
 
         ResultSet rs = st.executeQuery();
         rs.next();

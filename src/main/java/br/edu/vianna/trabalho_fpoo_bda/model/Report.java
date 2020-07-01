@@ -10,41 +10,81 @@ package br.edu.vianna.trabalho_fpoo_bda.model;
  * @author natha
  */
 public class Report {
-    private int id;
-    private Patient paciente;
-    private Exam exame;
+    private int pacientesAtendidos;
+    private int testesUtilizados;
+    private int examesDetectados;
+    private int examesNaoDetectados;
+    private int pacientesRecoleta;
+    private int examesInconclusivos;
+    private int examesInvalidos;
 
     public Report() {
     }
 
-    public Report(int id, Patient paciente, Exam exame) {
-        this.id = id;
-        this.paciente = paciente;
-        this.exame = exame;
+    public Report(int pacientesAtendidos, int testesUtilizados, int examesDetectados, int examesNaoDetectados, int pacientesRecoleta, int examesInconclusivos, int examesInvalidos) {
+        this.pacientesAtendidos = pacientesAtendidos;
+        this.testesUtilizados = testesUtilizados;
+        this.examesDetectados = examesDetectados;
+        this.examesNaoDetectados = examesNaoDetectados;
+        this.pacientesRecoleta = pacientesRecoleta;
+        this.examesInconclusivos = examesInconclusivos;
+        this.examesInvalidos = examesInvalidos;
     }
 
-    public int getId() {
-        return id;
+    public int getPacientesAtendidos() {
+        return pacientesAtendidos;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPacientesAtendidos(int pacientesAtendidos) {
+        this.pacientesAtendidos = pacientesAtendidos;
     }
 
-    public Patient getPaciente() {
-        return paciente;
+    public int getTestesUtilizados() {
+        return testesUtilizados;
     }
 
-    public void setPaciente(Patient paciente) {
-        this.paciente = paciente;
+    public void setTestesUtilizados(int testesUtilizados) {
+        this.testesUtilizados = testesUtilizados;
     }
 
-    public Exam getExame() {
-        return exame;
+    public int getExamesDetectados() {
+        return examesDetectados;
     }
 
-    public void setExame(Exam exame) {
-        this.exame = exame;
+    public void setExamesDetectados(int examesDetectados) {
+        this.examesDetectados = examesDetectados;
+    }
+
+    public int getExamesNaoDetectados() {
+        return examesNaoDetectados;
+    }
+
+    public void setExamesNaoDetectados(int examesNaoDetectados) {
+        this.examesNaoDetectados = examesNaoDetectados;
+    }
+
+    public int getPacientesRecoleta() {
+        return pacientesRecoleta;
+    }
+
+    public void setPacientesRecoleta(int pacientesRecoleta) {
+        this.pacientesRecoleta = pacientesRecoleta;
+    }
+
+    public int getExamesInconclusivos() {
+        return examesInconclusivos;
+    }
+
+    public void setExamesInconclusivos(int examesInconclusivos) {
+        this.examesInconclusivos = examesInconclusivos;
+    }
+
+    public int getExamesInvalidos() {
+        return examesInvalidos;
+    }
+
+    public void setExamesInvalidos(int examesInvalidos) {
+        this.examesInvalidos = examesInvalidos;
     }
     
     

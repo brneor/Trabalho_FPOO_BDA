@@ -15,10 +15,10 @@ import br.edu.vianna.trabalho_fpoo_bda.view.patient.PatientNew;
 import br.edu.vianna.trabalho_fpoo_bda.view.patient.PatientSearch;
 import br.edu.vianna.trabalho_fpoo_bda.view.professional.ProfessionalNew;
 import br.edu.vianna.trabalho_fpoo_bda.view.professional.ProfessionalSearch;
+import br.edu.vianna.trabalho_fpoo_bda.view.report.ReportNew;
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -297,7 +297,53 @@ public class Main extends javax.swing.JFrame {
     }
     
     private void createMenuSupervisor(){
+        // ---------------------------------------------------------------------
+        // Menu Exame
+        JMenu jmExam = new JMenu();
+        jmExam.setText("Exame");
         
+        // Bsucar Exame
+        JMenuItem jmiExamSearch = new JMenuItem();
+        jmiExamSearch.setText("Buscar...");
+        jmiExamSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiExamSearchActionPerformed(evt);
+            }
+        });
+
+        // Adiciona os itens ao menu "Exame"
+        jmExam.add(jmiExamSearch);
+        // ---------------------------------------------------------------------
+        
+        // Adiciona os menus ao menu principal
+        jmbMainMenu.add(jmExam);
+        
+        // Seta a barra de menu para o jmbMainMenu
+        this.setJMenuBar(jmbMainMenu);
+        
+                // ---------------------------------------------------------------------
+        // Menu Relatório
+        JMenu jmReport = new JMenu();
+        jmReport.setText("Relatório");
+        
+        // Bsucar Relatório
+        JMenuItem jmiReportNew = new JMenuItem();
+        jmiReportNew.setText("Gerar relatório...");
+        jmiReportNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiReportNewActionPerformed(evt);
+            }
+        });
+
+        // Adiciona os itens ao menu "Relatório"
+        jmReport.add(jmiReportNew);
+        // ---------------------------------------------------------------------
+        
+        // Adiciona os menus ao menu principal
+        jmbMainMenu.add(jmReport);
+        
+        // Seta a barra de menu para o jmbMainMenu
+        this.setJMenuBar(jmbMainMenu);
     }
     
     private void createMenuPaciente(){
@@ -350,6 +396,13 @@ public class Main extends javax.swing.JFrame {
         ExamSearch esearch = new ExamSearch(this, true);
         esearch.setLocationRelativeTo(this);
         esearch.setVisible(true);
+    }
+    
+    private void jmiReportNewActionPerformed(java.awt.event.ActionEvent evt) {
+        // Cria e mostra a tela de criação do relatório
+        ReportNew report = new ReportNew(this, true);
+        report.setLocationRelativeTo(this);
+        report.setVisible(true);
     }
         
     /**

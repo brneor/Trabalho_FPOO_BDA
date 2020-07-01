@@ -6,7 +6,6 @@
 package br.edu.vianna.trabalho_fpoo_bda.model.database.dao;
 
 import br.edu.vianna.trabalho_fpoo_bda.exception.NotConnectionException;
-import br.edu.vianna.trabalho_fpoo_bda.model.Professional;
 import br.edu.vianna.trabalho_fpoo_bda.model.ProfessionalType;
 import br.edu.vianna.trabalho_fpoo_bda.model.database.connection.ConnectionSingleton;
 import java.sql.Connection;
