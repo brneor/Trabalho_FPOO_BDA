@@ -33,8 +33,8 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer> {
     public void inserir(Exam obj) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "INSERT INTO Exame ( idTeste,idResultadoExame, idPaciente, idColeta)"
-                + "Values(?,?,?,?)";
+        String sql = "INSERT INTO Exame ( idTeste,idResultadoExame, idPaciente, idColeta, )"
+                + "Values(?,?,?,?,?)";
 
         PreparedStatement st = c.prepareStatement(sql);
 
@@ -42,6 +42,7 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer> {
         st.setInt(2, obj.getResultadoExame().getIdResultadoExame());
         st.setString(3, obj.getPaciente().getCpf());
         st.setInt(4, obj.getCollect().getIdColeta());
+        st.setObject(5, obj.getData());
 
         st.executeUpdate();
     }
@@ -56,6 +57,7 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer> {
                 + "idResultadoExame = ? "
                 + "idPaciente = ?  "
                 + "idColeta = ?  "
+                + "dataExame = ? "
                 + "WHERE id = ?";
 
         PreparedStatement st = c.prepareStatement(sql);
@@ -63,7 +65,8 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer> {
         st.setInt(1, obj.getTeste().getId());
         st.setInt(2, obj.getResultadoExame().getIdResultadoExame());
         st.setInt(3, obj.getCollect().getIdColeta());
-        st.setInt(4, obj.getIdExame());
+        st.setInt(4, obj.getId());
+        st.setObject(5, obj.getData());
 
         st.executeUpdate();
     }
@@ -77,7 +80,7 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer> {
 
         PreparedStatement st = c.prepareStatement(sql);
 
-        st.setInt(1, obj.getIdExame());
+        st.setInt(1, obj.getId());
 
         st.executeUpdate();
     }
@@ -112,6 +115,7 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer> {
             + "e.idResultadoExame, "
             + "e.idPaciente as pacienteCpf, "
             + "e.idColeta, "
+            + "e.dataExame, "
             + "rt.descricao as resultadoExame, "
             + "p.risco as pacienteRisco, "
             + "p.dataNascimento as pacienteNascimento, "
@@ -181,11 +185,12 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer> {
             er.setDescricao(rs.getString("resultadoExame"));
             
             Exam ex = new Exam();
-            ex.setIdExame(rs.getInt("idExame"));
+            ex.setId(rs.getInt("idExame"));
             ex.setCollect(cl);
             ex.setPaciente(p);
             ex.setResultadoExame(er);
             ex.setTeste(new Test(rs.getInt("idTeste"), ex));
+            ex.setData(rs.getDate("dataExame"));
             
             exames.add(ex);
         }

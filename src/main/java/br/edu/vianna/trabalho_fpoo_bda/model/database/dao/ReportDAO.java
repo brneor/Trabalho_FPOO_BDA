@@ -31,7 +31,7 @@ public class ReportDAO implements IGenericsDAO<Report, Integer> {
         //Inserido id do paciente
         st.setString(1, obj.getPaciente().getCpf());
         //Inserido id do exame
-        st.setInt(2, obj.getExame().getIdExame());
+        st.setInt(2, obj.getExame().getId());
 
         st.executeUpdate();
 
@@ -52,7 +52,7 @@ public class ReportDAO implements IGenericsDAO<Report, Integer> {
         //Inserido id do paciente
         st.setString(1, obj.getPaciente().getCpf());
         //Inserido id do exame
-        st.setInt(2, obj.getExame().getIdExame());
+        st.setInt(2, obj.getExame().getId());
 
         st.setInt(3, obj.getId());
 

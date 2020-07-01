@@ -148,7 +148,7 @@ public class ExamSearch extends javax.swing.JDialog {
         for (Exam exam : clist) {
             // Adiciona o resultado à tabela.
             model.addRow(new Object[] {
-                exam.getIdExame(), 
+                exam.getId(), 
                 exam.getCollect().getIdColeta(),
                 exam.getPaciente().getNome()
             });

@@ -5,6 +5,8 @@
  */
 package br.edu.vianna.trabalho_fpoo_bda.model;
 
+import java.util.Date;
+
 /**
  *
  * @author natha
@@ -15,23 +17,35 @@ public class Exam {
     private ExamResult resultadoExame;
     private Patient paciente;
     private Collect collect;
+    private Date data;
 
     public Exam() {
     }
 
-    public Exam(int idExame, Test teste, ExamResult resultadoExame, Patient paciente, Collect collect ) {
-        this.id = idExame;
+    public Exam(int id, Test teste, ExamResult resultadoExame, Patient paciente, Collect collect, Date data) {
+        this.id = id;
         this.teste = teste;
         this.resultadoExame = resultadoExame;
         this.paciente = paciente;
         this.collect = collect;
+        this.data = data;
     }
 
-    public int getIdExame() {
+    
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+
+    public int getId() {
         return id;
     }
 
-    public void setIdExame(int idExame) {
+    public void setId(int idExame) {
         this.id = idExame;
     }
 

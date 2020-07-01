@@ -31,7 +31,7 @@ public class TestDAO implements IGenericsDAO<Test, Integer> {
         PreparedStatement st = c.prepareStatement(sql);
 
         st.setInt(1, obj.getId());
-        st.setInt(2, obj.getExame().getIdExame());
+        st.setInt(2, obj.getExame().getId());
 
         st.executeUpdate();
     }
@@ -49,7 +49,7 @@ public class TestDAO implements IGenericsDAO<Test, Integer> {
         PreparedStatement st = c.prepareStatement(sql);
 
         st.setInt(1, obj.getId());
-        st.setInt(2, obj.getExame().getIdExame());
+        st.setInt(2, obj.getExame().getId());
 
         st.executeUpdate();
     }

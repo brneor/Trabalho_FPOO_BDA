@@ -14,7 +14,10 @@ import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.ExamDAO;
 import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.ExamResultDAO;
 import br.edu.vianna.trabalho_fpoo_bda.view.collect.CollectSearch;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -57,6 +60,8 @@ public class ExamNew extends javax.swing.JDialog {
         jbtnSalvar = new javax.swing.JButton();
         jbtnRefazer = new javax.swing.JButton();
         jbtnBuscar = new javax.swing.JButton();
+        jftxtData = new javax.swing.JFormattedTextField();
+        jlblData = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Exame");
@@ -96,6 +101,14 @@ public class ExamNew extends javax.swing.JDialog {
             }
         });
 
+        try {
+            jftxtData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        jlblData.setText("Data");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -103,13 +116,6 @@ public class ExamNew extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jbtnRefazer)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jbtnSalvar))
-                    .addComponent(jcmbResultado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jlblResultado)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jtxtTeste, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -122,7 +128,22 @@ public class ExamNew extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jtxtColeta, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jbtnBuscar)))))
+                                .addComponent(jbtnBuscar))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jbtnRefazer)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtnSalvar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jcmbResultado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jlblResultado)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jlblData)
+                            .addComponent(jftxtData, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -138,9 +159,13 @@ public class ExamNew extends javax.swing.JDialog {
                     .addComponent(jtxtColeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtnBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jlblResultado)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlblResultado)
+                    .addComponent(jlblData))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jcmbResultado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jcmbResultado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jftxtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtnSalvar)
@@ -193,10 +218,18 @@ public class ExamNew extends javax.swing.JDialog {
         teste.setId(Integer.parseInt(jtxtTeste.getText()));
         teste.setExame(exame);
         
+        Date dExame = new Date();
+        try {
+            dExame = new SimpleDateFormat("dd/MM/yyyy").parse(jftxtData.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(ExamNew.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         exame.setPaciente(coleta.getPaciente());
         exame.setTeste(teste);
         exame.setResultadoExame(resultado);
         exame.setCollect(coleta);
+        exame.setData(dExame);
         
         try {
             new ExamDAO().inserir(exame);
@@ -261,7 +294,9 @@ public class ExamNew extends javax.swing.JDialog {
     private javax.swing.JButton jbtnRefazer;
     private javax.swing.JButton jbtnSalvar;
     private javax.swing.JComboBox<String> jcmbResultado;
+    private javax.swing.JFormattedTextField jftxtData;
     private javax.swing.JLabel jlblColeta;
+    private javax.swing.JLabel jlblData;
     private javax.swing.JLabel jlblResultado;
     private javax.swing.JLabel jlblTeste;
     private javax.swing.JTextField jtxtColeta;
