@@ -88,10 +88,25 @@ public class ReportDAO implements IGenericsDAO<Report, Integer> {
     public Report buscarPeloId(Integer key) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "SELECT * FROM Relatorio as re\n"
+        String sql = "select \n"
+                + "p.nome as Paciente, "
+                + "p.cpf as Cpf, "
+                + "p.dataNascimento as DataNascimento, "
+                + "prof.nome as ProfissionalSaude, "
+                + "m.descricao as Material, "
+                + "c.dataColeta as dataColeta, "
+                + "c.horaColeta as horaColeta, "
+                + "c.cidade as Cidade, "
+                + "ex.dataExame, "
+                + "res.descricao as Resultado "
+                + "FROM Relatorio as re "
                 + "INNER JOIN Paciente p ON (re.idPaciente = p.cpf) "
-                + "INNER JOIN Exame ex ON (re.idExame = ex.id) "
-                + "WHERE re.id = ?";
+                + "INNER JOIN Exame as ex ON (re.idExame = ex.id) "
+                + "INNER JOIN ResultadoExame as res ON (ex.idResultadoExame = res.id) "
+                + "INNER JOIN Teste as t ON (t.id = ex.idTeste) "
+                + "INNER JOIN Coleta as c ON (ex.idColeta = c.id) "
+                + "INNER JOIN Material as m ON (m.id =  c.idMaterial) "
+                + "INNER JOIN ProfissionalSaude as prof ON ( prof.id = c.idProfissionalSaude)";
 
         PreparedStatement st = c.prepareStatement(sql);
 
@@ -107,7 +122,7 @@ public class ReportDAO implements IGenericsDAO<Report, Integer> {
         Collect co = new Collect();
         Professional prof = new Professional();
         ProfessionalType profT = new ProfessionalType();
-        Material m =  new Material();
+        Material m = new Material();
         if (rs.next()) {
             rep.setId(rs.getInt("id"));
             ex.setId(rs.getInt("id"));
@@ -138,8 +153,9 @@ public class ReportDAO implements IGenericsDAO<Report, Integer> {
             m.setDescricao(rs.getString("descricao"));
             co.setMaterial(m);
             ex.setCollect(co);
+            ex.setData(rs.getDate("dataExame"));
             rep.setExame(ex);
-            
+
             return rep;
         }
 
