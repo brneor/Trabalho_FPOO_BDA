@@ -20,30 +20,30 @@ select count(res.descricao) Exames_Detectados
 from Relatorio as re 
 inner join Exame as ex on re.idExame =  ex.id
 inner join ResultadoExame as res on  res.id = ex.idResultadoExame
-where res.descricao like '%Detectado%';
+where res.descricao like 'Detectado';
 
 /*Nao Detectado*/
  select count(res.descricao) Exames_Nao_Detectados
 from Relatorio as re inner join Exame as ex on re.idExame =  ex.id
 inner join ResultadoExame as res on  res.id = ex.idResultadoExame
-where res.descricao like '%Não detectado%';
+where res.descricao = 'Não detectado';
 
 /*Pacientes para recoleta*/
 select count(p.cpf) Paciente_Para_Recoleta
 from Paciente as p inner join Relatorio as re on p.cpf = re.idPaciente
 inner join Exame as ex on re.idExame =  ex.id
 inner join ResultadoExame as res on  res.id = ex.idResultadoExame
-where res.descricao like '%Recoleta%';
+where res.descricao = 'Recoleta';
 
 /*Pacientes com exame inconclusivos*/
 select count(p.cpf) Paciente_Inconclusivo
 from Paciente as p inner join Relatorio as re on p.cpf = re.idPaciente
 inner join Exame as ex on re.idExame =  ex.id
 inner join ResultadoExame as res on  res.id = ex.idResultadoExame
-where res.descricao like '%Inconclusivo%';
+where res.descricao = 'Inconclusivo';
 
 /*Exames inválidos*/
  select count(res.descricao) Inválido
 from Relatorio as re inner join Exame as ex on re.idExame =  ex.id
 inner join ResultadoExame as res on  res.id = ex.idResultadoExame
-where res.descricao like '%Inválido%';
+where res.descricao = 'Inválido';
