@@ -10,6 +10,7 @@ import br.edu.vianna.trabalho_fpoo_bda.model.Collect;
 import br.edu.vianna.trabalho_fpoo_bda.model.Exam;
 import br.edu.vianna.trabalho_fpoo_bda.model.ExamResult;
 import br.edu.vianna.trabalho_fpoo_bda.model.Test;
+import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.CollectDAO;
 import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.ExamDAO;
 import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.ExamResultDAO;
 import br.edu.vianna.trabalho_fpoo_bda.view.collect.CollectSearch;
@@ -62,6 +63,7 @@ public class ExamNew extends javax.swing.JDialog {
         jbtnBuscar = new javax.swing.JButton();
         jftxtData = new javax.swing.JFormattedTextField();
         jlblData = new javax.swing.JLabel();
+        jbtnAudit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Exame");
@@ -109,6 +111,13 @@ public class ExamNew extends javax.swing.JDialog {
 
         jlblData.setText("Data");
 
+        jbtnAudit.setText("Auditar");
+        jbtnAudit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnAuditActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -131,6 +140,8 @@ public class ExamNew extends javax.swing.JDialog {
                                 .addComponent(jbtnBuscar))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jbtnAudit)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jbtnRefazer)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jbtnSalvar))
@@ -169,7 +180,8 @@ public class ExamNew extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtnSalvar)
-                    .addComponent(jbtnRefazer))
+                    .addComponent(jbtnRefazer)
+                    .addComponent(jbtnAudit))
                 .addContainerGap())
         );
 
@@ -186,8 +198,8 @@ public class ExamNew extends javax.swing.JDialog {
         csearch.setLocationRelativeTo(this);
         coleta = csearch.getCollect();
         
-        System.out.println("id da coleta: " + coleta.getIdColeta());
-        jtxtColeta.setText(String.valueOf(coleta.getIdColeta()));
+        System.out.println("id da coleta: " + coleta.getId());
+        jtxtColeta.setText(String.valueOf(coleta.getId()));
         
     }//GEN-LAST:event_jbtnBuscarActionPerformed
 
@@ -197,22 +209,11 @@ public class ExamNew extends javax.swing.JDialog {
             jbtnRefazer.setVisible(false);
         }
         
-        ArrayList<ExamResult> resultados = new ArrayList<>();
-        try {
-            resultados = new ExamResultDAO().listar();
-        } catch (NotConnectionException ex) {
-            Logger.getLogger(ExamNew.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(ExamNew.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        for (ExamResult r : resultados) {
-            jcmbResultado.addItem(r.getDescricao());
-        }
+        populaResultados();
     }//GEN-LAST:event_formWindowOpened
 
     private void jbtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSalvarActionPerformed
-        resultado.setIdResultadoExame(jcmbResultado.getSelectedIndex());
+        resultado.setId(jcmbResultado.getSelectedIndex());
         resultado.setDescricao(jcmbResultado.getSelectedItem().toString());
         
         teste.setId(Integer.parseInt(jtxtTeste.getText()));
@@ -233,6 +234,9 @@ public class ExamNew extends javax.swing.JDialog {
         
         try {
             new ExamDAO().inserir(exame);
+            
+            // Tem que setar a coleta como exameRealizado
+            new CollectDAO().setRealizado(exame.getCollect().getId());
             JOptionPane.showMessageDialog(null, "Exame salvo com sucesso!");
             this.dispose();
         } catch (NotConnectionException ex) {
@@ -242,9 +246,46 @@ public class ExamNew extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jbtnSalvarActionPerformed
 
+    private void jbtnAuditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAuditActionPerformed
+        ExamAudit ea = new ExamAudit((JFrame) this.getParent(), true);
+        ea.setLocationRelativeTo(this);
+        
+        ea.auditarExame(exame);
+        this.dispose();
+    }//GEN-LAST:event_jbtnAuditActionPerformed
+
     public void refazerExam() {
         this.refazer = true;
         this.setVisible(true);
+    }
+    
+    public void editaExame(Exam exame) {
+        this.jbtnSalvar.setEnabled(false);
+        populaResultados();
+        SimpleDateFormat sdfShort = new SimpleDateFormat("dd/MM/yyyy");
+        this.exame = exame;
+        
+        jtxtTeste.setText(String.valueOf(exame.getTeste().getId()));
+        jtxtColeta.setText(String.valueOf(exame.getCollect().getId()));
+        jcmbResultado.setSelectedIndex(exame.getResultadoExame().getId());
+        jftxtData.setText(sdfShort.format(exame.getData()));
+        
+        this.setVisible(true);
+    }
+    
+    private void populaResultados () {
+        ArrayList<ExamResult> resultados = new ArrayList<>();
+        try {
+            resultados = new ExamResultDAO().listar();
+        } catch (NotConnectionException ex) {
+            Logger.getLogger(ExamNew.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ExamNew.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        for (ExamResult r : resultados) {
+            jcmbResultado.addItem(r.getDescricao());
+        }
     }
     
     /**
@@ -290,6 +331,7 @@ public class ExamNew extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jbtnAudit;
     private javax.swing.JButton jbtnBuscar;
     private javax.swing.JButton jbtnRefazer;
     private javax.swing.JButton jbtnSalvar;

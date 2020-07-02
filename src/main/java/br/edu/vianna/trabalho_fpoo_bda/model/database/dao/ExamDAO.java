@@ -34,15 +34,15 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer> {
     public void inserir(Exam obj) throws NotConnectionException, SQLException {
         Connection c = ConnectionSingleton.getConnection();
 
-        String sql = "INSERT INTO Exame ( idTeste,idResultadoExame, idPaciente, idColeta, )"
+        String sql = "INSERT INTO Exame ( idTeste,idResultadoExame, idPaciente, idColeta, dataExame)"
                 + "Values(?,?,?,?,?)";
 
         PreparedStatement st = c.prepareStatement(sql);
 
         st.setInt(1, obj.getTeste().getId());
-        st.setInt(2, obj.getResultadoExame().getIdResultadoExame());
+        st.setInt(2, obj.getResultadoExame().getId());
         st.setString(3, obj.getPaciente().getCpf());
-        st.setInt(4, obj.getCollect().getIdColeta());
+        st.setInt(4, obj.getCollect().getId());
         st.setObject(5, obj.getData());
 
         st.executeUpdate();
@@ -64,8 +64,8 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer> {
         PreparedStatement st = c.prepareStatement(sql);
 
         st.setInt(1, obj.getTeste().getId());
-        st.setInt(2, obj.getResultadoExame().getIdResultadoExame());
-        st.setInt(3, obj.getCollect().getIdColeta());
+        st.setInt(2, obj.getResultadoExame().getId());
+        st.setInt(3, obj.getCollect().getId());
         st.setInt(4, obj.getId());
         st.setObject(5, obj.getData());
 
@@ -139,7 +139,7 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer> {
             + "inner join Material as m on c.idMaterial = m.id "
             + "inner join ProfissionalSaude as ps on c.idProfissionalSaude = ps.id "
             + "inner join tipoProfissional as tp on ps.idTipoProfissional = tp.id "
-            + "where p.nome like ? order by p.nome";
+            + "where p.nome like ? and status = 0 order by p.nome";
         
         PreparedStatement st = c.prepareStatement(sql);
         
@@ -173,7 +173,7 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer> {
             m.setDescricao("material");
             
             Collect cl = new Collect();
-            cl.setIdColeta(rs.getInt("idColeta"));
+            cl.setId(rs.getInt("idColeta"));
             cl.setPaciente(p);
             cl.setProfissional(pf);
             cl.setMaterial(m);
@@ -182,7 +182,7 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer> {
             cl.setCidade(rs.getString("cidade"));
             
             ExamResult er = new ExamResult();
-            er.setIdResultadoExame(rs.getInt("idResultadoExame"));
+            er.setId(rs.getInt("idResultadoExame"));
             er.setDescricao(rs.getString("resultadoExame"));
             
             Exam ex = new Exam();
@@ -226,6 +226,22 @@ public class ExamDAO implements IGenericsDAO<Exam, Integer> {
         rs.next();
 
         return rs.getInt(1);
+    }
+    
+    public void auditar(Exam obj, Integer key) throws NotConnectionException, SQLException {
+        Connection c = ConnectionSingleton.getConnection();
+
+        String sql = "update Exame set status = ? where id = ?";
+
+        PreparedStatement st = c.prepareStatement(sql);
+        
+        System.out.println("key: " + key);
+        System.out.println("id: " + obj.getId());
+        
+        st.setInt(1, key);
+        st.setInt(2, obj.getId());
+
+        st.executeUpdate();
     }
 
 }

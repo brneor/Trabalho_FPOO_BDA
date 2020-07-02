@@ -10,10 +10,10 @@ import br.edu.vianna.trabalho_fpoo_bda.model.Exam;
 import br.edu.vianna.trabalho_fpoo_bda.model.database.dao.ExamDAO;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
  * @author breno
  */
 public class ExamSearch extends javax.swing.JDialog {
-
+    private ArrayList<Exam> clist = new ArrayList<>();
     /**
      * Creates new form ExamSearch
      */
@@ -89,6 +89,11 @@ public class ExamSearch extends javax.swing.JDialog {
         });
 
         jbtnAction.setText("Visualizar");
+        jbtnAction.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnActionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -133,7 +138,6 @@ public class ExamSearch extends javax.swing.JDialog {
 
         // Cria o DAO e faz a busca.
         ExamDAO edao = new ExamDAO();
-        ArrayList<Exam> clist = new ArrayList<>();
         try {
             clist = edao.buscarPorPaciente(jtxtBusca.getText());
         } catch (NotConnectionException ex) {
@@ -149,11 +153,26 @@ public class ExamSearch extends javax.swing.JDialog {
             // Adiciona o resultado à tabela.
             model.addRow(new Object[] {
                 exam.getId(), 
-                exam.getCollect().getIdColeta(),
+                exam.getCollect().getId(),
                 exam.getPaciente().getNome()
             });
         }
     }//GEN-LAST:event_jbtnBuscarActionPerformed
+
+    private void jbtnActionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActionActionPerformed
+        if (jtblResultado.getSelectedRow() != -1) {
+            int id = Integer.parseInt(jtblResultado.getValueAt(jtblResultado.getSelectedRow(), 0).toString());
+            for (Exam exam : clist) {
+                if (exam.getId() == id) {
+                    // Abre o exame para auditoria.
+                    ExamNew ex = new ExamNew((JFrame) this.getParent(), true);
+                    ex.setLocationRelativeTo(this);
+                    System.out.println("exame id: " + exam.getId());
+                    ex.editaExame(exam);
+                }
+            }
+        }
+    }//GEN-LAST:event_jbtnActionActionPerformed
 
     /**
      * @param args the command line arguments

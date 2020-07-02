@@ -80,7 +80,7 @@ public class CollectDAO implements IGenericsDAO<Collect, Integer> {
 
         PreparedStatement st = c.prepareStatement(sql);
 
-        st.setInt(1, obj.getIdColeta());
+        st.setInt(1, obj.getId());
 
         st.executeUpdate();
     }
@@ -147,7 +147,7 @@ public class CollectDAO implements IGenericsDAO<Collect, Integer> {
             m.setIdMaterial(rs.getInt("idMaterial"));
             m.setDescricao("material");
             
-            coleta.setIdColeta(rs.getInt("id"));
+            coleta.setId(rs.getInt("id"));
             coleta.setPaciente(p);
             coleta.setProfissional(pf);
             coleta.setMaterial(m);
@@ -192,7 +192,7 @@ public class CollectDAO implements IGenericsDAO<Collect, Integer> {
             + "INNER JOIN ProfissionalSaude ps ON c.idProfissionalSaude = ps.id "
             + "INNER JOIN tipoProfissional as tp on ps.idTipoProfissional = tp.id "
             + "INNER JOIN Material m ON c.idMaterial = m.id "
-            + "WHERE p.nome like ? order by p.nome"; 
+            + "WHERE p.nome like ? and c.exameRealizado = 0 order by p.nome"; 
         
         PreparedStatement st = c.prepareStatement(sql);
         
@@ -226,7 +226,7 @@ public class CollectDAO implements IGenericsDAO<Collect, Integer> {
             m.setDescricao("material");
             
             Collect cl = new Collect();
-            cl.setIdColeta(rs.getInt("id"));
+            cl.setId(rs.getInt("id"));
             cl.setPaciente(p);
             cl.setProfissional(pf);
             cl.setMaterial(m);
@@ -252,6 +252,18 @@ public class CollectDAO implements IGenericsDAO<Collect, Integer> {
         ResultSet rs = st.executeQuery();
 
         return rs.getInt(1);
+    }
+    
+    public void setRealizado(Integer key) throws NotConnectionException, SQLException {
+        Connection c = ConnectionSingleton.getConnection();
+
+        String sql = "update Coleta set exameRealizado = 1 where id = ?";
+
+        PreparedStatement st = c.prepareStatement(sql);
+
+        st.setInt(1, key);
+
+        st.executeUpdate();
     }
 
 }

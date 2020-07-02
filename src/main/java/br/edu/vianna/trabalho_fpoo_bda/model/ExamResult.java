@@ -21,11 +21,11 @@ public class ExamResult {
     public ExamResult() {
     }
 
-    public int getIdResultadoExame() {
+    public int getId() {
         return id;
     }
 
-    public void setIdResultadoExame(int idResultadoExame) {
+    public void setId(int idResultadoExame) {
         this.id = idResultadoExame;
     }
 

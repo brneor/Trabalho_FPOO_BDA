@@ -34,11 +34,11 @@ public class Collect {
         this.hora = horaColeta;
     }
 
-    public int getIdColeta() {
+    public int getId() {
         return id;
     }
 
-    public void setIdColeta(int idColeta) {
+    public void setId(int idColeta) {
         this.id = idColeta;
     }
 

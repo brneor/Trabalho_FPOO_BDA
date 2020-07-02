@@ -37,7 +37,7 @@ public class ExamResultDAO implements IGenericsDAO<ExamResult, Integer> {
 
         PreparedStatement st = c.prepareStatement(sql);
         
-        st.setInt(1, obj.getIdResultadoExame());
+        st.setInt(1, obj.getId());
         st.setString(2, obj.getDescricao());
         
         st.executeUpdate();
@@ -52,7 +52,7 @@ public class ExamResultDAO implements IGenericsDAO<ExamResult, Integer> {
 
         PreparedStatement st = c.prepareStatement(sql);
 
-        st.setInt(1, obj.getIdResultadoExame());
+        st.setInt(1, obj.getId());
 
         st.executeUpdate();
     }
@@ -97,7 +97,7 @@ public class ExamResultDAO implements IGenericsDAO<ExamResult, Integer> {
         while (rs.next()) {
             ExamResult e = new ExamResult();
 
-            e.setIdResultadoExame(rs.getInt("id"));
+            e.setId(rs.getInt("id"));
             e.setDescricao(rs.getString("descricao"));
 
             resultados.add(e);

@@ -173,7 +173,7 @@ public class CollectSearch extends javax.swing.JDialog {
             
             // Adiciona o resultado à tabela.
             model.addRow(new Object[] {
-                collect.getIdColeta(), 
+                collect.getId(), 
                 collect.getProfissional().getNome(),
                 collect.getPaciente().getNome(),
                 sdfShort.format(collect.getDataColeta()),
